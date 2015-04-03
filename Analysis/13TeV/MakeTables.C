@@ -234,7 +234,7 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
     // -------------------------------------
     // Print out on file  
     // -------------------------------------
-    fout.open(Form("Tables/TableOfYields_%s.tex", Region));
+    fout.open(Form("Output/Tables/TableOfYields_%s.tex", Region));
 
     fout << "\\begin{table}[!htb]" << endl;
     fout << "\\centering" << endl;

@@ -4,7 +4,7 @@
 void DoAnalysis(bool OnlyDraw=false) 
 {
     // Style
-    gROOT->ProcessLine(".L /Users/jaehyeok/macros/rootlogon.C");
+  //    gROOT->ProcessLine(".L rootlogon.C");
     // Load macros 
     gROOT->LoadMacro("MakeHists.C+");
     gROOT->LoadMacro("Make1DPlots.C+");
@@ -24,7 +24,7 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
   
-    TString BabyDir = "/Users/jaehyeok/Research/Tools/fastjet-3.0.6/example/babies/13TeV/Phys14/HT750MET250/";
+    TString BabyDir = "Phys14/";
     //TString BabyDir = "/Users/jaehyeok/Research/Tools/fastjet-3.0.6/example/babies/13TeV/Phys14_JetPt20_16Mar2015_HT750MET250/";
     
     // Data
@@ -34,12 +34,10 @@ void DoAnalysis(bool OnlyDraw=false)
     ch_ttbar_sl->Add(BabyDir+"baby_TTJets*.root");
     ch_ttbar_ll->Add(BabyDir+"baby_TTJets*.root");
     // WJets 
-    //ch_wjets->Add(BabyDir+"baby_WJetsToLNu*f1To*.root");
     ch_wjets->Add(BabyDir+"baby_WJetsToLNu*.root");
     // DY 
-    //ch_dy->Add(BabyDir+"baby_DYJetsToLL*f1To*.root");
     ch_dy->Add(BabyDir+"baby_DYJetsToLL*.root");
-    // Singla top 
+    // Single top 
     ch_t->Add(BabyDir+"baby_*channel*_f*.root");
 
     // Signal
@@ -73,7 +71,7 @@ void DoAnalysis(bool OnlyDraw=false)
         cout << "[MJ Analysis] Analyzing " << Region[iregion] << endl;
         cout << endl;
         cout << "[MJ Analysis] Making directory for figures : Figures/" << Region[iregion] << endl;
-        gSystem->mkdir(Form("Figures/%s",Region[iregion])); 
+        gSystem->mkdir(Form("Output/Figures/%s",Region[iregion])); 
 
 
         if(!OnlyDraw) 

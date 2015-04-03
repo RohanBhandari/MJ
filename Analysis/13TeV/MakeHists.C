@@ -1,3 +1,5 @@
+//Steps: 1. Declare 2. Initalize 3. Fill 4. Set Directory & Write
+
 #include <iostream>
 
 #include "TROOT.h"
@@ -544,8 +546,8 @@ void MakeHists(TChain *ch, char* Region)
         // HT, Nb and Nskinny with selected jets
         //
         float HT_thres=0.;
-        int   Nskinny_thres=0.;
-        int   Nbcsvm_thres=0.;
+        int   Nskinny_thres=0;
+        int   Nbcsvm_thres=0;
         for(unsigned int ijet=0; ijet<JetPt_->size(); ijet++)
         {
             if(JetPt_->at(ijet)<40 || TMath::Abs(JetEta_->at(ijet))>2.5) continue;

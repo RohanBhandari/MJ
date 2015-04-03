@@ -108,7 +108,7 @@ void MakeCards(int lepflav=0, const char* Region="")
     // -------------------------------------
     // Print out on file  
     // -------------------------------------
-    fout.open(Form("Cards/%s_%s.dat", Region, lepflavname.Data()));
+    fout.open(Form("Output/Cards/%s_%s.dat", Region, lepflavname.Data()));
 
     fout << "imax 1 number of channels" << endl;
     fout << "jmax * number of background" << endl;

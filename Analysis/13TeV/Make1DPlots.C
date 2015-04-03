@@ -54,7 +54,7 @@ void h2cosmetic(TH2F* &h2, char* title, TString Xvar="", TString Yvar="", TStrin
 //
 void Make1DPlots(TString HistName, char* Region, int NMergeBins=1) 
 { 
-    gInterpreter->ExecuteMacro("~/macros/JaeStyle.C");
+    gInterpreter->ExecuteMacro("JaeStyle.C");
 
     TFile* HistFile = TFile::Open(Form("HistFiles/Hist_%s.root", Region));
    
@@ -111,10 +111,10 @@ void Make1DPlots(TString HistName, char* Region, int NMergeBins=1)
     if(HistName=="muspTminusMET")          	var=(char*)"(MET-p_{T}(muon))/p_{T}(muon)";                  
     if(HistName=="musEta")              	var=(char*)"#eta(muon)";                         
     if(HistName=="musPhi")              	var=(char*)"#phi(muon)";                         
-    if(HistName=="elspT")               	var=(char*)"p_{T}(muon) [GeV]";                  
-    if(HistName=="elspTminusMET")          	var=(char*)"(MET-p_{T}(muon))/p_{T}(muon)";                  
-    if(HistName=="elsEta")              	var=(char*)"#eta(muon)";                         
-    if(HistName=="elsPhi")              	var=(char*)"#phi(muon)";                         
+    if(HistName=="elspT")               	var=(char*)"p_{T}(ele) [GeV]";                  
+    if(HistName=="elspTminusMET")          	var=(char*)"(MET-p_{T}(ele))/p_{T}(ele)";                  
+    if(HistName=="elsEta")              	var=(char*)"#eta(ele)";                         
+    if(HistName=="elsPhi")              	var=(char*)"#phi(ele)";                         
     if(HistName=="Nfatjet")             	var=(char*)"N_{fatjet}";
     if(HistName=="Nskinnyjet")          	var=(char*)"N_{skinny}";
     if(HistName=="Ncsvm")          	        var=(char*)"N_{CSVM}";
@@ -267,7 +267,7 @@ void Make1DPlots(TString HistName, char* Region, int NMergeBins=1)
 
     // 
     if(HistName=="mj") HistName="JetMass";
-    c->Print( Form("Figures/%s/CompareDataMC_%s_%s%s.pdf", Region, HistName.Data(), Region, DoLog?"_log":"") ); 
+    c->Print( Form("Output/Figures/%s/CompareDataMC_%s_%s%s.png", Region, HistName.Data(), Region, DoLog?"_log":"") ); 
     
     // 
     HistFile->Close();

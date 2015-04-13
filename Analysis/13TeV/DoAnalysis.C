@@ -24,10 +24,8 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
   
-    //TString BabyDir = "Phys14/";
-    TString BabyDir = "Phys14_New/";
+    TString BabyDir = "Phys14/";
     //TString BabyDir = "/net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/Phys14/";
-    //TString BabyDir = "/Users/jaehyeok/Research/Tools/fastjet-3.0.6/example/babies/13TeV/Phys14_JetPt20_16Mar2015_HT750MET250/";
     
     // Data
     //ch_data->Add(BabyDir+"baby_MuHad_*.root");                            
@@ -62,11 +60,11 @@ void DoAnalysis(bool OnlyDraw=false)
 
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"
     //        
-    TString Region[] = {"Baseline"}; 
-    //TString Region[] = {"R1.1b.1M.1J.1L", "SR0"}; 
+    //TString Region[] = {"Baseline"}; 
+    //TString Region[] = {"R1.1b.1M.2J.1L", "R1.1b.2M.2J.1L"}; 
     //    TString Region[] = {"R1", "R2", "R3", "R4"}; 
 
-    /*    // Set regions for making the "yield book"
+    // Set regions for making the "yield book"
     //
     int idx=0;   
     TString Region[96];
@@ -83,7 +81,7 @@ void DoAnalysis(bool OnlyDraw=false)
       }
     }
     //
-    //     */
+    //    
 
     int NRegion = sizeof(Region)/sizeof(Region[0]);
 

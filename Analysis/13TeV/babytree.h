@@ -4,6 +4,7 @@
 
     int             event_;
     float           EventWeight_;
+    float           EventWeightNeg_;
     float           Npu_;
     int             Npv_;
     int             Nfatjet_;
@@ -45,6 +46,7 @@
     
     TBranch         *b_event;   //!
     TBranch         *b_EventWeight;   //!
+    TBranch         *b_EventWeightNeg;   //!
     TBranch         *b_Npu;   //!
     TBranch         *b_Npv;   //!
     TBranch         *b_Nfatjet;   //!
@@ -112,6 +114,7 @@ void InitBaby(TChain *ch)
 
     ch->SetBranchAddress("event",           &event_,         &b_event);
     ch->SetBranchAddress("EventWeight",     &EventWeight_,   &b_EventWeight);
+    ch->SetBranchAddress("EventWeightNeg",     &EventWeightNeg_,   &b_EventWeightNeg);
     ch->SetBranchAddress("Npu",             &Npu_,           &b_Npu);
     ch->SetBranchAddress("Npv",             &Npv_,           &b_Npv);
     ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
@@ -121,15 +124,15 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("MET",             &MET_,           &b_MET);
     ch->SetBranchAddress("HT",              &HT_,            &b_HT);
     ch->SetBranchAddress("METPhi",          &METPhi_,        &b_METPhi);
-    //ch->SetBranchAddress("mj_pT30",         &mj_,            &b_mj);
-    //ch->SetBranchAddress("FatjetPt_pT30",   &FatjetPt_,      &b_FatjetPt);
-    //ch->SetBranchAddress("FatjetEta_pT30",  &FatjetEta_,     &b_FatjetEta);
-    //ch->SetBranchAddress("FatjetPhi_pT30",  &FatjetPhi_,     &b_FatjetPhi);
+    ch->SetBranchAddress("mj_pT30",         &mj_,            &b_mj);
+    ch->SetBranchAddress("FatjetPt_pT30",   &FatjetPt_,      &b_FatjetPt);
+    ch->SetBranchAddress("FatjetEta_pT30",  &FatjetEta_,     &b_FatjetEta);
+    ch->SetBranchAddress("FatjetPhi_pT30",  &FatjetPhi_,     &b_FatjetPhi);
     // vvvvvvvvvvvvvvvvvvvvvvvvvvvvv for different R(FJ) vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    ch->SetBranchAddress("mj_R1p2_pT30_Eta2p5",         &mj_,            &b_mj);
-    ch->SetBranchAddress("FatjetPt_R1p2_pT30_Eta2p5",   &FatjetPt_,      &b_FatjetPt);
-    ch->SetBranchAddress("FatjetEta_R1p2_pT30_Eta2p5",  &FatjetEta_,     &b_FatjetEta);
-    ch->SetBranchAddress("FatjetPhi_R1p2_pT30_Eta2p5",  &FatjetPhi_,     &b_FatjetPhi);
+    //    ch->SetBranchAddress("mj_R1p2_pT30_Eta2p5",         &mj_,            &b_mj);
+    //    ch->SetBranchAddress("FatjetPt_R1p2_pT30_Eta2p5",   &FatjetPt_,      &b_FatjetPt);
+    //    ch->SetBranchAddress("FatjetEta_R1p2_pT30_Eta2p5",  &FatjetEta_,     &b_FatjetEta);
+    //    ch->SetBranchAddress("FatjetPhi_R1p2_pT30_Eta2p5",  &FatjetPhi_,     &b_FatjetPhi);
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ for different R(FJ) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     //ch->SetBranchAddress("FatjetN_pT30",    &FatjetN_,       &b_FatjetN);
     ch->SetBranchAddress("RA4MusPt",        &RA4MusPt_,      &b_RA4MusPt);

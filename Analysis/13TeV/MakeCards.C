@@ -54,7 +54,7 @@ void MakeCards(int lepflav=0, const char* Region="")
 
     TString HistName="yields";
 
-    TFile* HistFile = TFile::Open(Form("HistFiles/Hist_%s.root", Region));
+    TFile* HistFile = TFile::Open(Form("HistFiles/YieldsBook/Hist_%s.root", Region));
         
     TH1F *h1_DATA[7], *h1_T[7], *h1_TT_sl[7], *h1_TT_ll[7], *h1_WJets[7], *h1_DY[7], *h1_MC[7];
     TH1F *h1_f1500_100[7], *h1_f1200_800[7];
@@ -108,7 +108,7 @@ void MakeCards(int lepflav=0, const char* Region="")
     // -------------------------------------
     // Print out on file  
     // -------------------------------------
-    fout.open(Form("Output/Cards/%s_%s.dat", Region, lepflavname.Data()));
+    fout.open(Form("Output/YieldsBook/Cards/%s_%s.dat", Region, lepflavname.Data()));
 
     fout << "imax 1 number of channels" << endl;
     fout << "jmax * number of background" << endl;

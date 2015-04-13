@@ -24,7 +24,9 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
   
-    TString BabyDir = "Phys14/";
+    //TString BabyDir = "Phys14/";
+    TString BabyDir = "Phys14_New/";
+    //TString BabyDir = "/net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/Phys14/";
     //TString BabyDir = "/Users/jaehyeok/Research/Tools/fastjet-3.0.6/example/babies/13TeV/Phys14_JetPt20_16Mar2015_HT750MET250/";
     
     // Data
@@ -58,51 +60,70 @@ void DoAnalysis(bool OnlyDraw=false)
     cout << "T1tttt(1200,8000)  : " << ch_f1200_800->GetEntries()  << endl;
    
 
-    //
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"
+    //        
+    TString Region[] = {"Baseline"}; 
+    //TString Region[] = {"R1.1b.1M.1J.1L", "SR0"}; 
+    //    TString Region[] = {"R1", "R2", "R3", "R4"}; 
+
+    /*    // Set regions for making the "yield book"
     //
-    //char* Region[] = {"Baseline","SR0", "SR1", "SR2", "SR3", "SR4", "SR5", "SR6", "SR7", "SR8", "SR9"}; 
-    char* Region[] = {"Baseline"}; 
+    int idx=0;   
+    TString Region[96];
+    for(int i=1; i<=4; i++){
+      for(int j=1; j<=3; j++){
+	for(int k=1; k<=2; k++){
+	  for(int l=1; l<=2; l++){
+	    for(int m=1; m<=2; m++){
+	      Region[idx] = Form("R%i.%ib.%iM.%iJ.%iL",i,j,k,l,m);
+	      idx++;
+	    }
+	  }
+	}
+      }
+    }
+    //
+    //     */
+
     int NRegion = sizeof(Region)/sizeof(Region[0]);
 
     for(int iregion=0; iregion<NRegion; iregion++)
     {
         cout << endl;
-        cout << "[MJ Analysis] Analyzing " << Region[iregion] << endl;
+        cout << "[MJ Analysis] Analyzing " << Region[iregion].Data() << endl;
         cout << endl;
-        cout << "[MJ Analysis] Making directory for figures : Figures/" << Region[iregion] << endl;
-        gSystem->mkdir(Form("Output/Figures/%s",Region[iregion])); 
-
+        cout << "[MJ Analysis] Making directory for figures : Figures/" << Region[iregion].Data() << endl;
+        gSystem->mkdir(Form("Output/YieldsBook/Figures/%s",Region[iregion].Data())); 
 
         if(!OnlyDraw) 
         {
             // ----------------------------------------
             //  Fill histrograms 
             // ----------------------------------------
-            MakeHists(ch_data,	    Region[iregion]); 
-            MakeHists(ch_ttbar_sl,  Region[iregion]); 
-            MakeHists(ch_ttbar_ll,  Region[iregion]); 
-            MakeHists(ch_wjets,     Region[iregion]); 
-            MakeHists(ch_dy,	    Region[iregion]); 
-            MakeHists(ch_t,         Region[iregion]); 
-            MakeHists(ch_f1500_100, Region[iregion]);  
-            MakeHists(ch_f1200_800, Region[iregion]); 
+	    MakeHists(ch_data,	    Region[iregion].Data()); 
+            MakeHists(ch_ttbar_sl,  Region[iregion].Data()); 
+            MakeHists(ch_ttbar_ll,  Region[iregion].Data()); 
+            MakeHists(ch_wjets,     Region[iregion].Data()); 
+            MakeHists(ch_dy,	    Region[iregion].Data()); 
+            MakeHists(ch_t,         Region[iregion].Data()); 
+            MakeHists(ch_f1500_100, Region[iregion].Data());  
+            MakeHists(ch_f1200_800, Region[iregion].Data()); 
 
             // ----------------------------------------
             //  Make the final histogram file
             // ----------------------------------------
             cout << "[MJ Analysis] Merging result files" << endl;
-            gSystem->Exec(Form("rm HistFiles/Hist_%s.root", Region[iregion]));
-            gSystem->Exec(Form("hadd -f HistFiles/Hist_%s.root HistFiles/*_%s.root", Region[iregion], Region[iregion]));
-            gSystem->Exec(Form("mv HistFiles/Hist_%s.root HistFiles/Hist_%s.root.tmp", Region[iregion], Region[iregion]));
-            gSystem->Exec(Form("rm HistFiles/*_%s.root", Region[iregion]));
-            gSystem->Exec(Form("mv HistFiles/Hist_%s.root.tmp HistFiles/Hist_%s.root", Region[iregion], Region[iregion]));
+            gSystem->Exec(Form("rm HistFiles/YieldsBook/Hist_%s.root", Region[iregion].Data()));
+            gSystem->Exec(Form("hadd -f HistFiles/YieldsBook/Hist_%s.root HistFiles/YieldsBook/*_%s.root", Region[iregion].Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("mv HistFiles/YieldsBook/Hist_%s.root HistFiles/YieldsBook/Hist_%s.root.tmp", Region[iregion].Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("rm HistFiles/YieldsBook/*_%s.root", Region[iregion].Data()));
+            gSystem->Exec(Form("mv HistFiles/YieldsBook/Hist_%s.root.tmp HistFiles/YieldsBook/Hist_%s.root", Region[iregion].Data(), Region[iregion].Data()));
         }
 
         // ----------------------------------------
         //  Draw histograms 
         // ---------------------------------------- 
-        Make1DPlots("dRlep",        Region[iregion]);
+	/*        Make1DPlots("dRlep",        Region[iregion].Data());
         Make1DPlots("dPhiMET",      Region[iregion]);
         Make1DPlots("dRbmin",       Region[iregion]);
         Make1DPlots("dPhiMETlep",   Region[iregion]);
@@ -152,21 +173,21 @@ void DoAnalysis(bool OnlyDraw=false)
         Make1DPlots("mjOverPt3",    Region[iregion]);
         Make1DPlots("mjOverPt4",    Region[iregion]);
         Make1DPlots("mj3overmj2",   Region[iregion]);
-        Make1DPlots("mj2overmj1",   Region[iregion]);
+        Make1DPlots("mj2overmj1",   Region[iregion]); */
 
         // ----------------------------------------
         //  Make table of yields 
         // ---------------------------------------- 
-        MakeTables(0,   Region[iregion], false);
-        MakeTables(11,  Region[iregion], false);
-        MakeTables(13,  Region[iregion], false);
+        MakeTables(0,   Region[iregion].Data(), false);
+        MakeTables(11,  Region[iregion].Data(), false);
+        MakeTables(13,  Region[iregion].Data(), false);
         
         // ----------------------------------------
         //  Make cards for combine/LandS 
         // ---------------------------------------- 
-        MakeCards(0,   Region[iregion]);
-        MakeCards(11,  Region[iregion]);
-        MakeCards(13,  Region[iregion]);
+        MakeCards(0,   Region[iregion].Data());
+        MakeCards(11,  Region[iregion].Data());
+        MakeCards(13,  Region[iregion].Data());
     } //for(int iregion=0; iregion<2; iregion++)
 
 }

@@ -28,8 +28,9 @@ void PrintTableOneLine(TString Process, TH1F* h1[7], int lepflav=0, bool doLatex
     // Print out on file 
     if(PrintFile) 
     {
+      if(doLatex){
         if(lepflav!=11 && lepflav!=13)
-        {
+	  {
             Double_t error[7];
             for(int i=2; i<7; i++) h1[i]->IntegralAndError(1,10000,error[i]);
             fout << Process << " & " 
@@ -39,9 +40,9 @@ void PrintTableOneLine(TString Process, TH1F* h1[7], int lepflav=0, bool doLatex
                  << Form("$%.2f \\pm %.2f$",h1[5]->Integral(),error[5]) << "\t&" 
                  << Form("$%.2f \\pm %.2f$",h1[6]->Integral(),error[6]) << "\t\\\\" 
                  << endl; 
-        }
+	  }
         else 
-        {   
+	  {   
             int bin = (lepflav-9)/2;
             fout << Process << " & " 
                  << Form("$%.2f \\pm %.2f$",h1[2]->GetBinContent(bin),h1[2]->GetBinError(bin)) << "\t&" 
@@ -50,8 +51,34 @@ void PrintTableOneLine(TString Process, TH1F* h1[7], int lepflav=0, bool doLatex
                  << Form("$%.2f \\pm %.2f$",h1[5]->GetBinContent(bin),h1[5]->GetBinError(bin)) << "\t&" 
                  << Form("$%.2f \\pm %.2f$",h1[6]->GetBinContent(bin),h1[6]->GetBinError(bin)) << "\t\\\\" 
                  << endl; 
-        }
+	  }
         if(Process.Contains("Bkg")) fout << "\\hline \\hline" << endl;  
+      }
+      else{
+	if(lepflav!=11 && lepflav!=13)
+	  {
+	    Double_t error[7];
+	    for(int i=2; i<7; i++) h1[i]->IntegralAndError(1,10000,error[i]);
+	    fout << "|" << 
+	      setw(20) << Process << " |"  <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[2]->Integral(), error[2]) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[3]->Integral(), error[3]) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[4]->Integral(), error[4]) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[5]->Integral(), error[5]) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[6]->Integral(), error[6]) << " |" << endl; 
+	  }
+	else 
+	  {   
+	    int bin = (lepflav-9)/2;
+	    fout << "|" << 
+	      setw(20) << Process << " |"  <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[2]->GetBinContent(bin), h1[2]->GetBinError(bin)) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[3]->GetBinContent(bin), h1[3]->GetBinError(bin)) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[4]->GetBinContent(bin), h1[4]->GetBinError(bin)) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[5]->GetBinContent(bin), h1[5]->GetBinError(bin)) << " |" <<
+	      setw(20) << Form("%.2f +/- %.2f", h1[6]->GetBinContent(bin), h1[6]->GetBinError(bin)) << " |" << endl; 
+	  }
+      }
     }
     else 
     {
@@ -137,7 +164,7 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
 
     TString HistName="yields";
 
-    TFile* HistFile = TFile::Open(Form("HistFiles/Hist_%s.root", Region));
+    TFile* HistFile = TFile::Open(Form("HistFiles/YieldsBook/Hist_%s.root", Region));
         
     TH1F *h1_DATA[7], *h1_T[7], *h1_TT_sl[7], *h1_TT_ll[7], *h1_WJets[7], *h1_DY[7], *h1_MC[7];
     TH1F *h1_f1500_100[7], *h1_f1200_800[7];
@@ -233,65 +260,222 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
     
     // -------------------------------------
     // Print out on file  
-    // -------------------------------------
-    fout.open(Form("Output/Tables/TableOfYields_%s.tex", Region));
+    // -------------------------------------   
+    bool printLatex = true;
+    bool printTxt = true;
 
-    fout << "\\begin{table}[!htb]" << endl;
-    fout << "\\centering" << endl;
-    fout << "\\begin{tabular}{c | c c c c | c }" << endl;
-    fout << "\\hline \\hline" << endl;
-    fout << "Process  & " 
-         << "$N_{FJ}=2$ \t&" 
-         << "$N_{FJ}=3$ \t&" 
-         << "$N_{FJ}=4$ \t&" 
-         << "$N_{FJ}\\ge 5$ \t&" 
-         << "$N_{FJ}\\ge 2$ \t\\\\" 
-         << endl; 
-    fout << "\\hline" << endl;
-    fout << "\\multicolumn{6}{c}{Electron + muon channel} \\\\" << endl; 
-    fout << "\\hline" << endl;
-    lepflav=0;
-    PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
-    PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
-    PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
-    PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
-    PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
-    PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
-    fout << "\\hline \\hline" << endl;
-    
-    lepflav=11;
-    fout << "\\multicolumn{6}{c}{Electron channel} \\\\" << endl; 
-    fout << "\\hline" << endl;
-    PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
-    PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
-    PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
-    PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
-    PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
-    PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
-    fout << "\\hline \\hline" << endl;
-    
-    lepflav=13;
-    fout << "\\multicolumn{6}{c}{Muon channel} \\\\" << endl; 
-    fout << "\\hline" << endl;
-    PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
-    PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
-    PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
-    PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
-    PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
-    PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
-    PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
+    if(printLatex){
+      fout.open(Form("Output/YieldsBook/Tables/TableOfYields_%s.tex", Region));
 
-    // Print out on file  
-    fout << "\\hline \\hline" << endl;
-    fout << "\\end{tabular}" << endl;
-    fout << "\\label{tab:"<< Region << "}" << endl;
-    fout << "\\caption{Table of yields in " << Region << ". From top to bottom, electon+muon, electron and muon channels}" << endl;
-    fout << "\\end{table}" << endl;
-    fout.close();
+      fout << "\\begin{table}[!htb]" << endl;
+      fout << "\\centering" << endl;
+      fout << "\\begin{tabular}{c | c c c c | c }" << endl;
+      fout << "\\hline \\hline" << endl;
+      fout << "Process  & " 
+	   << "$N_{FJ}=2$ \t&" 
+	   << "$N_{FJ}=3$ \t&" 
+	   << "$N_{FJ}=4$ \t&" 
+	   << "$N_{FJ}\\ge 5$ \t&" 
+	   << "$N_{FJ}\\ge 2$ \t\\\\" 
+	   << endl; 
+      fout << "\\hline" << endl;
+      fout << "\\multicolumn{6}{c}{Electron + muon channel} \\\\" << endl; 
+      fout << "\\hline" << endl;
+      lepflav=0;
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
+      fout << "\\hline \\hline" << endl;
+    
+      lepflav=11;
+      fout << "\\multicolumn{6}{c}{Electron channel} \\\\" << endl; 
+      fout << "\\hline" << endl;
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
+      fout << "\\hline \\hline" << endl;
+    
+      lepflav=13;
+      fout << "\\multicolumn{6}{c}{Muon channel} \\\\" << endl; 
+      fout << "\\hline" << endl;
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	doLatex, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	doLatex, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	doLatex, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	doLatex, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	doLatex, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	doLatex, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	doLatex, true);
+
+      // Print out on file  
+      fout << "\\hline \\hline" << endl;
+      fout << "\\end{tabular}" << endl;
+      fout << "\\label{tab:"<< Region << "}" << endl;
+      fout << "\\caption{Table of yields in " << Region << ". From top to bottom, electon+muon, electron and muon channels}" << endl;
+      fout << "\\end{table}" << endl;
+      fout.close();
+    }
+
+    if(printTxt){
+      fout.open(Form("Output/YieldsBook/Tables/TableOfYields_%s.txt", Region));
+
+      lepflav=0;
+      fout<<"Yields for Electron+Muon"<<endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+      fout << "|" << 
+	setw(20) << "Process" << " |"  <<
+	setw(20) << "N_FJ=2" << " |" <<
+	setw(20) << "N_FJ=3" << " |" <<
+	setw(20) << "N_FJ=4" << " |" <<
+	setw(20) << "N_FJ>=5" << " |" <<
+	setw(20) << "N_FJ>=2" << " |" << endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+    
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	false, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	false, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	false, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	false, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	false, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	false, true);
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	false, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	false, true);
+        
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      fout << endl;
+
+      lepflav=11;
+      fout<<"Yields for Electron"<<endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+      fout << "|" << 
+	setw(20) << "Process" << " |"  <<
+	setw(20) << "N_FJ=2" << " |" <<
+	setw(20) << "N_FJ=3" << " |" <<
+	setw(20) << "N_FJ=4" << " |" <<
+	setw(20) << "N_FJ>=5" << " |" <<
+	setw(20) << "N_FJ>=2" << " |" << endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+    
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	false, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	false, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	false, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	false, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	false, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	false, true);
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	false, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	false, true);
+        
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      fout << endl;
+      
+      lepflav=13;
+      fout<<"Yields for Muon"<<endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+      fout << "|" << 
+	setw(20) << "Process" << " |"  <<
+	setw(20) << "N_FJ=2" << " |" <<
+	setw(20) << "N_FJ=3" << " |" <<
+	setw(20) << "N_FJ=4" << " |" <<
+	setw(20) << "N_FJ>=5" << " |" <<
+	setw(20) << "N_FJ>=2" << " |" << endl;
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;
+    
+      PrintTableOneLine("TT(l)",              h1_TT_sl,       lepflav,	false, true);
+      PrintTableOneLine("TT(ll)",             h1_TT_ll,       lepflav,	false, true);
+      PrintTableOneLine("t+tW",               h1_T,           lepflav,	false, true);
+      PrintTableOneLine("WJets",              h1_WJets,       lepflav,	false, true);
+      PrintTableOneLine("DY",                 h1_DY,          lepflav,	false, true);
+      PrintTableOneLine("Total Bkg",          h1_MC,          lepflav,	false, true);
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      PrintTableOneLine("T1tttt[1200,800]",   h1_f1200_800,   lepflav,	false, true);
+      PrintTableOneLine("T1tttt[1500,100]",   h1_f1500_100,   lepflav,	false, true);
+        
+      fout << "|" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "--" <<
+	setw(20) << Form("--------------------") << "-|" << endl;	  
+      fout << endl;
+
+      fout.close();
+    }
 }
-

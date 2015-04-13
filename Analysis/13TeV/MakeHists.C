@@ -144,7 +144,7 @@ float GetMuonEff(float pt, float eta)
 
 float getDPhi(float phi1, float phi2) 
 { 
-    float absdphi = abs(phi1-phi2);
+    float absdphi = fabs(phi1-phi2);
     if(absdphi < TMath::Pi()) return absdphi;
     else return (2*TMath::Pi() - absdphi);
     // Ryan's : http://www.aidansean.com/cheatsheets/?p=105
@@ -153,7 +153,7 @@ float getDPhi(float phi1, float phi2)
 }
 float getDEta(float eta1, float eta2)
 {
-    return abs(eta1-eta2);
+    return fabs(eta1-eta2);
 }
 float getDR(float dphi, float deta)
 {
@@ -175,7 +175,7 @@ float getISRSF(float ISRpT)
 //
 // per process
 //
-void MakeHists(TChain *ch, char* Region) 
+void MakeHists(TChain *ch, const char* Region) 
 { 
 
     InitBaby(ch); 
@@ -217,7 +217,7 @@ void MakeHists(TChain *ch, char* Region)
         h1_yields[i] = InitTH1F( Form("h1_%s_yields_%ifatjet", ch->GetTitle(), i), 
                                  Form("h1_%s_yields_%ifatjet", ch->GetTitle(), i), 
                                  2, 0, 2); // bin1 for e, bin2 for mu
-        //
+	//
         // h1                    
         //
         h1_dPhitop[i] = InitTH1F( Form("h1_%s_dPhitop_%ifatjet", ch->GetTitle(), i), 
@@ -463,7 +463,7 @@ void MakeHists(TChain *ch, char* Region)
                                        Form("h2_%s_mj4vspt4_%ifatjet", ch->GetTitle(), i), 
                                        10, 0, 100, 10, 0, 500);
     }
-    
+
     //
     //
     //
@@ -487,6 +487,7 @@ void MakeHists(TChain *ch, char* Region)
     //
     //
     //InitTree(ch);
+
     Int_t nentries = (Int_t)ch->GetEntries();
     for(int i = 0; i<nentries; i++)
     {
@@ -526,20 +527,22 @@ void MakeHists(TChain *ch, char* Region)
         if(ChainName.Contains("TT_sl") && Ngenlep!=1) continue;  
         if(ChainName.Contains("TT_ll") && Ngenlep!=2) continue;  
 
+
         // 
         // weights 
         // 
-        // Temp fixes for wrong event weights 
-        if(!ChainName.Contains("TT") && !ChainName.Contains("T1tttt"))  
-        { 
-            EventWeight_ = EventWeight_/*5000.*/; 
-        }
+	// This is for any negative weights
+	if(EventWeightNeg_ < 0) EventWeight_=EventWeight_*-1;
+	
+	// Events are normalized to 1 pb-1
+	EventWeight_ = EventWeight_*5000.; 
         // Pileup 
 
         // 
         // single-lepton events selection
         // 
-        if(!PassNLep(1))  continue; // need this upfront because of mT calculation
+	//Comented passnlep out for control region yields
+	if(!PassNLep(1))  continue; // need this upfront because of mT calculation
 
 
         //
@@ -568,17 +571,16 @@ void MakeHists(TChain *ch, char* Region)
             if(FatjetPt_->at(ifj)<FatjetpTthres) continue; 
             if(mj_->at(ifj)<mjthres) continue; 
             MJ_thres = MJ_thres + mj_->at(ifj);   
-
-            //
-            // do some matching
+	    
+	    // do some matching
             //
             // ------------------------- matching begins -------------------------------
             // lepton
             float dRlep=999.;
             if( RA4MusPt_->size()==1 ) dRlep = getDR( RA4MusEta_->at(0), FatjetEta_->at(ifj), 
-                                                    RA4MusPhi_->at(0), FatjetPhi_->at(ifj) );
+						      RA4MusPhi_->at(0), FatjetPhi_->at(ifj) );
             if( RA4ElsPt_->size()==1 ) dRlep = getDR( RA4ElsEta_->at(0), FatjetEta_->at(ifj), 
-                                                    RA4ElsPhi_->at(0), FatjetPhi_->at(ifj) );
+						      RA4ElsPhi_->at(0), FatjetPhi_->at(ifj) );
 
             // MET 
             float dPhiMET=getDPhi(FatjetPhi_->at(ifj), METPhi_);
@@ -586,7 +588,7 @@ void MakeHists(TChain *ch, char* Region)
             // B-jet 
             float dRbmin=999.;
             for(unsigned int ijet=0; ijet<JetPt_->size(); ijet++) 
-            { 
+	      { 
 
                 if(JetPt_->at(ijet)<40 || TMath::Abs(JetEta_->at(ijet))>2.5) continue;
 
@@ -595,7 +597,7 @@ void MakeHists(TChain *ch, char* Region)
                 float dRb_tmp = getDR( JetEta_->at(ijet), FatjetEta_->at(ifj), 
                                        JetPhi_->at(ijet), FatjetPhi_->at(ifj) );
                 if( dRb_tmp<dRbmin ) dRbmin=dRb_tmp;                         
-            }
+	      }
             
             // dPhi(MET,lep)
             float dPhiMETlep=999; 
@@ -612,14 +614,14 @@ void MakeHists(TChain *ch, char* Region)
             //if( dPhiMET<1.0 )   continue;
             //if( dRbmin<1.2  )   continue;
             // ------------------------- matching done -------------------------------
-            
+	    
             Nfatjet_thres++;
             mj_thres_sorted.push_back(mj_->at(ifj));
         }
         sort(mj_thres_sorted.begin(), mj_thres_sorted.end());
         reverse(mj_thres_sorted.begin(), mj_thres_sorted.end());
 
-        // Get indices of sorted mj 
+	// Get indices of sorted mj 
         // I know this is not the best way of doing this, but ... 
         for(int imj_sorted=0; imj_sorted<(int)mj_thres_sorted.size(); imj_sorted++) 
         { 
@@ -654,8 +656,8 @@ void MakeHists(TChain *ch, char* Region)
         //
         // Calculate variables 
         //
-        double mT;
-        double WpT;
+        double mT = -1;
+        double WpT = -1;
         if(RA4MusPt_->size()==1) {
             mT  = TMath::Sqrt( 2*MET_*RA4MusPt_->at(0)*(1-TMath::Cos(METPhi_-RA4MusPhi_->at(0))) ); 
             WpT = TMath::Sqrt(  
@@ -673,14 +675,11 @@ void MakeHists(TChain *ch, char* Region)
                        *(RA4ElsPt_->at(0)*TMath::Sin(RA4ElsPhi_->at(0)) + MET_*TMath::Sin(METPhi_))  ); 
         }
 
+        // Apply Selection. Must pass the Baseline Selection and any other chosen Selections
+        // 
 
-
-        //
-        // Apply selection   
-        //
-        // baseline selection
-        if( !PassBaselineSelection(HT_thres, MET_, Nbcsvm_thres, Nskinny_thres) ) continue; 
-        if( !PassSelection(Region, HT_thres, MET_, Nbcsvm_thres, Nskinny_thres, mT, MJ_thres)) continue;
+	if( !PassBaselineSelection(HT_thres, MET_, Nbcsvm_thres, Nskinny_thres) ) continue; 
+	if( !PassSelection(Region, HT_thres, MET_, Nbcsvm_thres, Nskinny_thres, mT, MJ_thres)) continue;
  
         int NFJbin = -1;
         if(Nfatjet_thres>4) NFJbin=5;
@@ -715,8 +714,8 @@ void MakeHists(TChain *ch, char* Region)
             }
 
         }
-        float ISRweight=1.;
-        if(ChainName.Contains("TT")) 
+        float ISRweight=1.; 
+	if(ChainName.Contains("TT")) 
         {   
             FillTH1FAll(h1_dPhitop,     NFJbin, getDPhi(top1Phi, top2Phi), EventWeight_);  
             FillTH2FAll(h2_dPhidpTtop,  NFJbin, getDPhi(top1Phi, top2Phi), TMath::Abs(top1pT-top2pT), EventWeight_); 
@@ -759,7 +758,7 @@ void MakeHists(TChain *ch, char* Region)
         
         // plots
         if(RA4MusPt_->size()==1) {
-            FillTH1FAll(h1_muspT,   NFJbin,  RA4MusPt_->at(0),  EventWeight_); 
+            FillTH1FAll(h1_muspT,   NFJbin, RA4MusPt_->at(0),  EventWeight_); 
             FillTH1FAll(h1_musEta,  NFJbin, RA4MusEta_->at(0), EventWeight_); 
             FillTH1FAll(h1_musPhi,  NFJbin, RA4MusPhi_->at(0), EventWeight_); 
             if(getDPhi(RA4MusPhi_->at(0),METPhi_)<0.4) 
@@ -777,9 +776,9 @@ void MakeHists(TChain *ch, char* Region)
             }
         }
 
-        if(NFJbin>1) FillTH2FAll(h2_mj1vsmj2, NFJbin, mj_->at(mj_thres_sorted_index.at(0)), mj_->at(mj_thres_sorted_index.at(1)), EventWeight_);           
-        if(NFJbin>2) FillTH2FAll(h2_mj2vsmj3, NFJbin, mj_->at(mj_thres_sorted_index.at(1)), mj_->at(mj_thres_sorted_index.at(2)), EventWeight_);           
-        if(NFJbin>3) FillTH2FAll(h2_mj3vsmj4, NFJbin, mj_->at(mj_thres_sorted_index.at(2)), mj_->at(mj_thres_sorted_index.at(3)), EventWeight_);           
+	//        if(NFJbin>1) FillTH2FAll(h2_mj1vsmj2, NFJbin, mj_->at(mj_thres_sorted_index.at(0)), mj_->at(mj_thres_sorted_index.at(1)), EventWeight_);           
+	//        if(NFJbin>2) FillTH2FAll(h2_mj2vsmj3, NFJbin, mj_->at(mj_thres_sorted_index.at(1)), mj_->at(mj_thres_sorted_index.at(2)), EventWeight_);           
+	//        if(NFJbin>3) FillTH2FAll(h2_mj3vsmj4, NFJbin, mj_->at(mj_thres_sorted_index.at(2)), mj_->at(mj_thres_sorted_index.at(3)), EventWeight_);           
         FillTH2FAll(h2_HTMET, NFJbin, HT_thres, MET_, EventWeight_);         
         FillTH2FAll(h2_MJmT, NFJbin, MJ_thres, mT, EventWeight_);       
         FillTH2FAll(h2_HTmT, NFJbin, HT_thres, mT, EventWeight_);            
@@ -788,7 +787,7 @@ void MakeHists(TChain *ch, char* Region)
         FillTH2FAll(h2_METmT, NFJbin, MET_, mT, EventWeight_);           
         FillTH1FAll(h1_mT,  NFJbin, mT, EventWeight_);                 
         FillTH1FAll(h1_WpT, NFJbin, WpT, EventWeight_);               
-        FillTH1FAll(h1_HT, NFJbin, HT_thres, EventWeight_);                
+         FillTH1FAll(h1_HT, NFJbin, HT_thres, EventWeight_);                
         FillTH1FAll(h1_MJ, NFJbin, MJ_thres, EventWeight_); 
         FillTH1FAll(h1_MJ_ISR, NFJbin, MJ_thres, EventWeight_*ISRweight); 
         FillTH1FAll(h1_MET, NFJbin, MET_, EventWeight_);              
@@ -800,8 +799,9 @@ void MakeHists(TChain *ch, char* Region)
         
         if(Nfatjet_thres>0) 
         {
-            FillTH1FAll(h1_FatjetPt1,   NFJbin, FatjetPt_->at(mj_thres_sorted_index.at(0)),       EventWeight_);   
-            FillTH1FAll(h1_mj1,         NFJbin, mj_->at(mj_thres_sorted_index.at(0)),  EventWeight_);    
+	    FillTH1FAll(h1_FatjetPt1,   NFJbin, FatjetPt_->at(mj_thres_sorted_index.at(0)),       EventWeight_);   
+	    //            FillTH1FAll(h1_mj1,         NFJbin, mj_->at(mj_thres_sorted_index.at(0)),  EventWeight_);    
+            FillTH1FAll(h1_mj1,         NFJbin, mj_thres_sorted.at(0),  EventWeight_);    
             FillTH1FAll(h1_mj1OverMJ,   NFJbin, mj_->at(mj_thres_sorted_index.at(0))/MJ_thres,  EventWeight_);    
             FillTH1FAll(h1_mjOverPt1,   NFJbin, mj_->at(mj_thres_sorted_index.at(0))/FatjetPt_->at(mj_thres_sorted_index.at(0)),  EventWeight_);    
             FillTH1FAll(h1_FatjetPhi1,  NFJbin, FatjetPhi_->at(mj_thres_sorted_index.at(0)),      EventWeight_); 
@@ -867,7 +867,7 @@ void MakeHists(TChain *ch, char* Region)
             FillTH1FAll(h1_FatjetEta4,  NFJbin, FatjetEta_->at(mj_thres_sorted_index.at(5)),      EventWeight_); 
 //            FillTH1FAll(h1_N4,          NFJbin, FatjetN_->at(5),      EventWeight_); 
             FillTH2FAll(h2_mj4vspt4, NFJbin, mj_->at(mj_thres_sorted_index.at(5)), FatjetPt_->at(mj_thres_sorted_index.at(5)), EventWeight_);           
-        }
+	    }
 
         for(int imj=0; imj<(int)mj_->size(); imj++) 
         { 
@@ -898,11 +898,12 @@ void MakeHists(TChain *ch, char* Region)
     }
 
     TString HistFileName = ch->GetTitle();
-    HistFileName = Form("HistFiles/%s_%s.root", HistFileName.Data(), Region);
+    HistFileName = Form("HistFiles/YieldsBook/%s_%s.root", HistFileName.Data(), Region);
     cout << "[MJ Analysis] Writing " << HistFileName << endl;
     TFile *HistFile = new TFile(HistFileName, "RECREATE");
     gROOT->cd();
     HistFile->cd();
+
     // write histograms
     for(int i=0; i<7; i++)  
     {

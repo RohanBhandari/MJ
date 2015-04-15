@@ -25,6 +25,7 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
   
     TString BabyDir = "Phys14/";
+    //TString BabyDir = "Phys14_HT500MET200/";
     //TString BabyDir = "/net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/Phys14/";
     
     // Data
@@ -61,17 +62,17 @@ void DoAnalysis(bool OnlyDraw=false)
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"
     //        
     //TString Region[] = {"Baseline"}; 
-    //TString Region[] = {"R1.1b.1M.2J.1L", "R1.1b.2M.2J.1L"}; 
-    //    TString Region[] = {"R1", "R2", "R3", "R4"}; 
+    //TString Region[] = {"R1.1b.1M.1J.2L", "R1.1b.1M.2J.2L", "R1.1b.2M.1J.2L", "R1.1b.2M.2J.2L"}; 
+    //TString Region[] = {"R1", "R2", "R3", "R4"}; 
 
     // Set regions for making the "yield book"
     //
     int idx=0;   
-    TString Region[96];
+    TString Region[144];
     for(int i=1; i<=4; i++){
       for(int j=1; j<=3; j++){
 	for(int k=1; k<=2; k++){
-	  for(int l=1; l<=2; l++){
+	  for(int l=0; l<=2; l++){
 	    for(int m=1; m<=2; m++){
 	      Region[idx] = Form("R%i.%ib.%iM.%iJ.%iL",i,j,k,l,m);
 	      idx++;
@@ -186,6 +187,12 @@ void DoAnalysis(bool OnlyDraw=false)
         MakeCards(0,   Region[iregion].Data());
         MakeCards(11,  Region[iregion].Data());
         MakeCards(13,  Region[iregion].Data());
-    } //for(int iregion=0; iregion<2; iregion++)
+
+	// ----------------------------------------
+        //  Make Yields Book 
+        // ---------------------------------------- 
+	
+
+    } // Loop over regions
 
 }

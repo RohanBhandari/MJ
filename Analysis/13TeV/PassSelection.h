@@ -13,7 +13,7 @@ bool PassNLep(unsigned int Nlep)
 bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny)
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
-  return  (HT>750 && MET>250 && Nskinny>5); //For yields book. No Nbtag cut
+  return  (HT>750 && MET>250 && Nskinny>3); //For yields book. No Nbtag cut
 }
  
 // 
@@ -122,7 +122,10 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
 	  }
 	  
 	  // Nj
-	  for(int l=1; l<=2; l++){
+	  for(int l=0; l<=2; l++){
+	    if(l==0){
+	      NjMax = 5;	    NjMin = 4;
+	    }
 	    if(l==1){
 	      NjMax = 7;	    NjMin = 6;
 	    }

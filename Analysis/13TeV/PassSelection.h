@@ -13,7 +13,7 @@ bool PassNLep(unsigned int Nlep)
 bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny)
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
-  return  (HT>750 && MET>250 && Nskinny>3); //For yields book. No Nbtag cut
+  return  (HT>500 && MET>250 && Nskinny>5); //For yields book. No Nbtag cut
 }
  
 // 
@@ -32,7 +32,7 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
 
     //The following selections are for the synchronization exercise. Note that they may be redundant to the "SR"-labeled regions
     //
-   
+    if((RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0){
     if(Region=="R1" 
         && HT   > -1
         && MET  > -1 
@@ -68,7 +68,7 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
         && mT   > 150 
         && MJ   > 600 
        )  passed = true; 
-
+    }
     int Nlep = -1;
     
     if((RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0)

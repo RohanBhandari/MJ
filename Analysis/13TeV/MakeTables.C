@@ -156,7 +156,7 @@ void PrintTableOneLine(TString Process, TH1F* h1[7], int lepflav=0, bool doLatex
     }
 }
 
-void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
+void MakeTables(int lepflav=0, const char* Region="", const char* babyName="", bool doLatex=false)
 { 
     if(lepflav==0)  cout << "[MJ Table] Yields for Electron+Muon" << endl;
     if(lepflav==11) cout << "[MJ Table] Yields for Electron" << endl;
@@ -164,7 +164,7 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
 
     TString HistName="yields";
 
-    TFile* HistFile = TFile::Open(Form("HistFiles/YieldsBook/HT750MET250_NoMiniIso/Hist_%s.root", Region));
+    TFile* HistFile = TFile::Open(Form("HistFiles/YieldsBook/%s/Hist_%s.root", babyName, Region));
         
     TH1F *h1_DATA[7], *h1_T[7], *h1_TT_sl[7], *h1_TT_ll[7], *h1_WJets[7], *h1_DY[7], *h1_MC[7];
     TH1F *h1_f1500_100[7], *h1_f1200_800[7];
@@ -265,7 +265,7 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
     bool printTxt = true;
 
     if(printLatex){
-      fout.open(Form("Output/YieldsBook/Tables/HT750MET250_NoMiniIso/TableOfYields_%s.tex", Region));
+      fout.open(Form("Output/YieldsBook/Tables/%s/TableOfYields_%s.tex", babyName, Region));
 
       fout << "\\begin{table}[!htb]" << endl;
       fout << "\\centering" << endl;
@@ -327,7 +327,7 @@ void MakeTables(int lepflav=0, const char* Region="", bool doLatex=false)
     }
 
     if(printTxt){
-      fout.open(Form("Output/YieldsBook/Tables/HT750MET250_NoMiniIso/TableOfYields_%s.txt", Region));
+      fout.open(Form("Output/YieldsBook/Tables/%s/TableOfYields_%s.txt", babyName, Region));
 
       lepflav=0;
       fout<<"Yields for Electron+Muon"<<endl;

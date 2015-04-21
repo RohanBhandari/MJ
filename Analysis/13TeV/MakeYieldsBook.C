@@ -44,12 +44,13 @@ void PrintRegionBlock(int bCut, int nLep){
       Bkg_RegTot[i] += total_Bkg[i][bCut][nLep][l];
       Sig_RegTot[i] += total_f1500_100[i][bCut][nLep][l];
     }
+    /*    //DEBUG
     if(i==2){
       cout<<"Bcut: "<<bCut<<endl;
       cout<<"Nlep: "<<nLep<<endl;
       cout<<"BKG Reg Tot: "<<Bkg_RegTot[i]<<endl;    
       cout<<"SIG Reg Tot: "<<Sig_RegTot[i]<<endl;
-    }
+      }*/
   }
 
   double sigContam[Nregions][Nmetjetcuts];

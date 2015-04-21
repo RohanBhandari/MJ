@@ -26,8 +26,8 @@ const int Nbcuts = 4;
 const int Njetcuts = 3;
 const int Nmetcuts = 3;
 const int Nlepcuts = 3;
-const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)+1;
-//const int Nmetjetcuts = 5;
+//const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)+1;
+const int Nmetjetcuts = 5;
 
 // Indices: [Region][b-cut][lep-cut][4 MET and Njet bins]
 // Indices are 1 too large so that they match region/cut number (i.e. arrays start at 1)
@@ -37,15 +37,19 @@ double total_f1200_800[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
 
 void PrintRegionBlock(int bCut, int nLep){
 
-  double Bkg_RegTot[Nregions];
-  double Sig_RegTot[Nregions];
+  double Bkg_RegTot[Nregions] = {0};
+  double Sig_RegTot[Nregions] = {0};
   for(int i=1; i<Nregions; i++){
     for(int l=1; l<Nmetjetcuts; l++){
       Bkg_RegTot[i] += total_Bkg[i][bCut][nLep][l];
       Sig_RegTot[i] += total_f1500_100[i][bCut][nLep][l];
     }
-    //    cout<<"BKG Reg Tot:"<<Bkg_RegTot[i]<<endl;    
-    //    cout<<"SIG Reg Tot:"<<Sig_RegTot[i]<<endl;
+    if(i==2){
+      cout<<"Bcut: "<<bCut<<endl;
+      cout<<"Nlep: "<<nLep<<endl;
+      cout<<"BKG Reg Tot: "<<Bkg_RegTot[i]<<endl;    
+      cout<<"SIG Reg Tot: "<<Sig_RegTot[i]<<endl;
+    }
   }
 
   double sigContam[Nregions][Nmetjetcuts];
@@ -176,36 +180,40 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
     if(d==1 && e==2) f = 2;
     if(d==2 && e==1) f = 3;
     if(d==2 && e==2) f = 4;
-      
+
+    if(f == -1) cout<<"THERE IS A PROBLEM WITH CHAR TO INT. f = -1"<<endl;
+
     total_Bkg[a][b][c][f] = h1_MC->IntegralAndError(1,10000,total_Bkg_err[a][b][c][f]);
     total_f1500_100[a][b][c][f] = h1_f1500_100->IntegralAndError(1,10000,total_f1500_100_err[a][b][c][f]);
     total_f1200_800[a][b][c][f] = h1_f1200_800->IntegralAndError(1,10000,total_f1200_800_err[a][b][c][f]);
   }
 
-  /*  // DEBUG
+  // DEBUG
   //
-  for(int i=1; i<4; i++){
-    for(int j=1; j<3; j++){
-      for(int k=1; k<2; k++){
-	for(int l=1; l<4; l++){
+  /*  for(int i=1; i<Nregions; i++){
+    for(int j=1; j<Nbcuts; j++){
+      for(int k=1; k<Nlepcuts; k++){
+	for(int l=1; l<Nmetjetcuts; l++){
 	  cout<<Form("R%i.%ib.%iL",i,j,k);
-	  cout<<"Bkg: "<<total_Bkg[i][j][k][l]<<endl;
-	  cout<<"Bkg Err: "<<total_Bkg_err[i][j][k][l]<<endl;
-	  cout<<"f1500_100: "<<total_f1500_100[i][j][k][l]<<endl;
-	  cout<<"f1500_100 Err: "<<total_f1500_100_err[i][j][k][l]<<endl;  
-	  cout<<"f1200_800: "<<total_f1200_800[i][j][k][l]<<endl;  
-	  cout<<"f1200_800 Err: "<<total_f1200_800_err[i][j][k][l]<<endl; 
+	  if(i==2){
+	    cout<<"\n Bkg: "<<total_Bkg[i][j][k][l]<<endl;
+	    //cout<<"Bkg Err: "<<total_Bkg_err[i][j][k][l]<<endl;
+	    cout<<"f1500_100: "<<total_f1500_100[i][j][k][l]<<endl;
+	    //cout<<"f1500_100 Err: "<<total_f1500_100_err[i][j][k][l]<<endl;  
+	    cout<<"f1200_800: "<<total_f1200_800[i][j][k][l]<<endl;  
+	    //	  cout<<"f1200_800 Err: "<<total_f1200_800_err[i][j][k][l]<<endl; 
+	  }
 	}
       }
     } 
-  }*/
+    }*/
   //
   //
 
   //Now we want to print this out in LaTeX
   //Use with LaTeXiT, text format
   for(int j=1;j<Nlepcuts;j++){ 
-    fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s_%iL.tex",babyName, babyName,j));
+    fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s_%iL.tex", babyName, babyName,j));
     for(int i=1;i<Nbcuts; i++){
       fout<<"\\centering"<<endl;
       fout<<"\\begin{tabular}{| c | c c | c || c || c | c c | c |}"<<endl;

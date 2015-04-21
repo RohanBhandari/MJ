@@ -928,7 +928,7 @@ void MakeHists(TChain *ch, const char* Region)
     }
 
     TString HistFileName = ch->GetTitle();
-    HistFileName = Form("HistFiles/YieldsBook/HT500MET250_NoMiniIso/%s_%s.root", HistFileName.Data(), Region);
+    HistFileName = Form("HistFiles/YieldsBook/HT750MET250_NoMiniIso/%s_%s.root", HistFileName.Data(), Region);
     cout << "[MJ Analysis] Writing " << HistFileName << endl;
     TFile *HistFile = new TFile(HistFileName, "RECREATE");
     gROOT->cd();

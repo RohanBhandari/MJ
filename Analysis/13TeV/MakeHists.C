@@ -1,4 +1,4 @@
-//Steps: 1. Declare 2. Initalize 3. Fill 4. Set Directory & Write
+//Steps: 1. Declare 2. Initalize 3. Fill 4. Set Directory & Write\
 
 #include <iostream>
 
@@ -202,6 +202,9 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
          *h1_FatjetEta1[7], *h1_FatjetEta2[7], *h1_FatjetEta3[7], *h1_FatjetEta4[7],
          *h1_dRFJ[7], *h1_dPhiFJ[7], *h1_dEtaFJ[7],
          *h1_HT[7], *h1_MET[7], *h1_METPhi[7], *h1_METx[7], *h1_METy[7], *h1_DPhi[7], *h1_Nfatjet[7], *h1_WpT[7];
+
+    TH1F *h1_dR_Lep_Trk[7];
+
     TH2F *h2_mj1vsmj2[7], *h2_mj2vsmj3[7], *h2_mj3vsmj4[7];
     TH2F *h2_mj1vspt1[7], *h2_mj2vspt2[7], *h2_mj3vspt3[7], *h2_mj4vspt4[7];
     TH2F *h2_HTMET[7], *h2_MJmT[7];
@@ -414,6 +417,9 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
                              Form("h1_%s_WpT_%ifatjet", ch->GetTitle(), i), 
                              //20, 0, 500);
                              20, 0, 1000);
+        h1_dR_Lep_Trk[i] = InitTH1F( Form("h1_%s_dR_Lep_Trk_%ifatjet", ch->GetTitle(), i), 
+                                 Form("h1_%s_dR_Lep_Trk_%ifatjet", ch->GetTitle(), i), 
+                                 20, 0, 4);	
         //
         // h2                    
         //
@@ -543,6 +549,85 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         // 
 	//Comented passnlep out for control region yields
 	//if(!PassNLep(1))  continue; // need this upfront because of mT calculation
+
+	vector<int> goodIsoTrkEls;
+	vector<int> goodIsoTrkMus;
+	vector<int> goodIsoTrkHad;
+
+	//Isolated Trk Veto Cleaning
+	for(unsigned int j=0; j<IsoTrkVetoElsPt_->size(); j++){
+	  float isoTrkdR = 999;
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    if(getDR(IsoTrkVetoElsEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoElsPhi_->at(j), RA4ElsPhi_->at(iEl)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoElsEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoElsPhi_->at(j), RA4ElsPhi_->at(iEl));
+	    }
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    if(getDR(IsoTrkVetoElsEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoElsPhi_->at(j), RA4MusPhi_->at(iMu)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoElsEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoElsPhi_->at(j), RA4MusPhi_->at(iMu));
+	    }
+	  }
+	  if(isoTrkdR > 0.3) 
+	    goodIsoTrkEls.push_back(j);
+	}	
+	for(unsigned int j=0; j<IsoTrkVetoMusPt_->size(); j++){
+	  float isoTrkdR = 999;
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    if(getDR(IsoTrkVetoMusEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoMusPhi_->at(j), RA4ElsPhi_->at(iEl)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoMusEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoMusPhi_->at(j), RA4ElsPhi_->at(iEl));
+	    }
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    if(getDR(IsoTrkVetoMusEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoMusPhi_->at(j), RA4MusPhi_->at(iMu)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoMusEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoMusPhi_->at(j), RA4MusPhi_->at(iMu));
+	    }
+	  }
+	  if(isoTrkdR > 0.3) 
+	    goodIsoTrkMus.push_back(j);
+	}
+	for(unsigned int j=0; j<IsoTrkVetoHadPt_->size(); j++){
+	  float isoTrkdR = 999;
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    if(getDR(IsoTrkVetoHadEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoHadPhi_->at(j), RA4ElsPhi_->at(iEl)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoHadEta_->at(j), RA4ElsEta_->at(iEl), IsoTrkVetoHadPhi_->at(j), RA4ElsPhi_->at(iEl));
+	    }
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    if(getDR(IsoTrkVetoHadEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoHadPhi_->at(j), RA4MusPhi_->at(iMu)) < isoTrkdR){
+	      isoTrkdR = getDR(IsoTrkVetoHadEta_->at(j), RA4MusEta_->at(iMu), IsoTrkVetoHadPhi_->at(j), RA4MusPhi_->at(iMu));
+	    }
+	  }
+	  if(isoTrkdR > 0.3) 
+	    goodIsoTrkHad.push_back(j);
+	}
+	
+	// Veto events with 2 or more isolated tracks
+	if(goodIsoTrkEls.size() + goodIsoTrkMus.size() + goodIsoTrkHad.size() >= 2) continue;
+
+	/*	for(unsigned int j=0; j<goodIsoTrkEls.size(); j++){
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoElsEta_->at(goodIsoTrkEls.at(j)), RA4ElsEta_->at(iEl), IsoTrkVetoElsPhi_->at(goodIsoTrkEls.at(j)), RA4ElsPhi_->at(iEl)), EventWeight_);
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoElsEta_->at(goodIsoTrkEls.at(j)), RA4MusEta_->at(iMu), IsoTrkVetoElsPhi_->at(goodIsoTrkEls.at(j)), RA4MusPhi_->at(iMu)), EventWeight_);
+	  }
+	}
+	for(unsigned int j=0; j<goodIsoTrkMus.size(); j++){
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoMusEta_->at(goodIsoTrkMus.at(j)), RA4ElsEta_->at(iEl), IsoTrkVetoMusPhi_->at(goodIsoTrkMus.at(j)), RA4ElsPhi_->at(iEl)), EventWeight_);
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoMusEta_->at(goodIsoTrkMus.at(j)), RA4MusEta_->at(iMu), IsoTrkVetoMusPhi_->at(goodIsoTrkMus.at(j)), RA4MusPhi_->at(iMu)), EventWeight_);
+	  }
+	}
+	for(unsigned int j=0; j<goodIsoTrkHad.size(); j++){
+	  for(unsigned int iEl=0; iEl<RA4ElsPt_->size(); iEl++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoHadEta_->at(goodIsoTrkHad.at(j)), RA4ElsEta_->at(iEl), IsoTrkVetoHadPhi_->at(goodIsoTrkHad.at(j)), RA4ElsPhi_->at(iEl)), EventWeight_);
+	  }
+	  for(unsigned int iMu=0; iMu<RA4MusPt_->size(); iMu++){
+	    FillTH1FAll(h1_dR_Lep_Trk, 3, getDR(IsoTrkVetoHadEta_->at(goodIsoTrkHad.at(j)), RA4MusEta_->at(iMu), IsoTrkVetoHadPhi_->at(goodIsoTrkHad.at(j)), RA4MusPhi_->at(iMu)), EventWeight_);
+	  }
+	  }*/
 
 
         //
@@ -987,6 +1072,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         h1_dRFJ[i]->SetDirectory(0);                        h1_dRFJ[i]->Write();
         h1_dPhiFJ[i]->SetDirectory(0);                      h1_dPhiFJ[i]->Write();
         h1_dEtaFJ[i]->SetDirectory(0);                      h1_dEtaFJ[i]->Write();
+        h1_dR_Lep_Trk[i]->SetDirectory(0);                  h1_dR_Lep_Trk[i]->Write();
         h2_HTMET[i]->SetDirectory(0);                       h2_HTMET[i]->Write();
         h2_MJmT[i]->SetDirectory(0);                        h2_MJmT[i]->Write();
         h2_HTmT[i]->SetDirectory(0);                        h2_HTmT[i]->Write();

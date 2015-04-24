@@ -37,6 +37,17 @@
     vector<float>   *GenId_;
     vector<float>   *GenMId_;
     vector<float>   *GenGMId_;
+
+    vector<float>   *IsoTrkVetoElsPt_;
+    vector<float>   *IsoTrkVetoElsEta_;
+    vector<float>   *IsoTrkVetoElsPhi_;
+    vector<float>   *IsoTrkVetoMusPt_;
+    vector<float>   *IsoTrkVetoMusEta_;
+    vector<float>   *IsoTrkVetoMusPhi_;
+    vector<float>   *IsoTrkVetoHadPt_;
+    vector<float>   *IsoTrkVetoHadEta_;
+    vector<float>   *IsoTrkVetoHadPhi_;
+
     bool        TrigMuon_;
     bool        TrigSingleMuon_;
     float        top1pT_;
@@ -79,12 +90,23 @@
     TBranch         *b_GenId;   //!
     TBranch         *b_GenMId;   //!
     TBranch         *b_GenGMId;   //!
-    TBranch     *b_TrigMuon; 
-    TBranch     *b_TrigSingleMuon; 
-    TBranch     *b_top1pT; 
-    TBranch     *b_top1Phi; 
-    TBranch     *b_top2pT; 
-    TBranch     *b_top2Phi; 
+
+    TBranch         *b_IsoTrkVetoElsPt;
+    TBranch         *b_IsoTrkVetoElsEta;
+    TBranch         *b_IsoTrkVetoElsPhi;
+    TBranch         *b_IsoTrkVetoMusPt;
+    TBranch         *b_IsoTrkVetoMusEta;
+    TBranch         *b_IsoTrkVetoMusPhi;
+    TBranch         *b_IsoTrkVetoHadPt;
+    TBranch         *b_IsoTrkVetoHadEta;
+    TBranch         *b_IsoTrkVetoHadPhi;
+
+    TBranch         *b_TrigMuon; 
+    TBranch         *b_TrigSingleMuon; 
+    TBranch         *b_top1pT; 
+    TBranch         *b_top1Phi; 
+    TBranch         *b_top2pT; 
+    TBranch         *b_top2Phi; 
     
 void InitBaby(TChain *ch)
 {
@@ -112,9 +134,19 @@ void InitBaby(TChain *ch)
     GenMId_  = 0;
     GenGMId_  = 0;
 
+    IsoTrkVetoElsPt_  = 0;
+    IsoTrkVetoElsEta_  = 0;
+    IsoTrkVetoElsPhi_  = 0;
+    IsoTrkVetoMusPt_  = 0;
+    IsoTrkVetoMusEta_  = 0;
+    IsoTrkVetoMusPhi_  = 0;
+    IsoTrkVetoHadPt_  = 0;
+    IsoTrkVetoHadEta_  = 0;
+    IsoTrkVetoHadPhi_  = 0;
+
     ch->SetBranchAddress("event",           &event_,         &b_event);
     ch->SetBranchAddress("EventWeight",     &EventWeight_,   &b_EventWeight);
-    ch->SetBranchAddress("EventWeightNeg",     &EventWeightNeg_,   &b_EventWeightNeg);
+    ch->SetBranchAddress("EventWeightNeg",  &EventWeightNeg_,   &b_EventWeightNeg);
     ch->SetBranchAddress("Npu",             &Npu_,           &b_Npu);
     ch->SetBranchAddress("Npv",             &Npv_,           &b_Npv);
     ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
@@ -171,6 +203,17 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("GenId",           &GenId_,         &b_GenId);
     ch->SetBranchAddress("GenMId",          &GenMId_,        &b_GenMId);
     ch->SetBranchAddress("GenGMId",         &GenGMId_,       &b_GenGMId);
+
+    ch->SetBranchAddress("IsoTrkVetoElsPt",         &IsoTrkVetoElsPt_,       &b_IsoTrkVetoElsPt);
+    ch->SetBranchAddress("IsoTrkVetoElsEta",        &IsoTrkVetoElsEta_,      &b_IsoTrkVetoElsEta);
+    ch->SetBranchAddress("IsoTrkVetoElsPhi",        &IsoTrkVetoElsPhi_,      &b_IsoTrkVetoElsPhi);
+    ch->SetBranchAddress("IsoTrkVetoMusPt",         &IsoTrkVetoMusPt_,       &b_IsoTrkVetoMusPt);
+    ch->SetBranchAddress("IsoTrkVetoMusEta",        &IsoTrkVetoMusEta_,      &b_IsoTrkVetoMusEta);
+    ch->SetBranchAddress("IsoTrkVetoMusPhi",        &IsoTrkVetoMusPhi_,      &b_IsoTrkVetoMusPhi);
+    ch->SetBranchAddress("IsoTrkVetoHadPt",         &IsoTrkVetoHadPt_,       &b_IsoTrkVetoHadPt);
+    ch->SetBranchAddress("IsoTrkVetoHadEta",        &IsoTrkVetoHadEta_,      &b_IsoTrkVetoHadEta);
+    ch->SetBranchAddress("IsoTrkVetoHadPhi",        &IsoTrkVetoHadPhi_,      &b_IsoTrkVetoHadPhi);
+
     //ch->SetBranchAddress("top1pT",        &top1pT_, &b_top1pT);
     //ch->SetBranchAddress("top1Phi",       &top1Phi_, &b_top1Phi);
     //ch->SetBranchAddress("top2pT",        &top2pT_, &b_top2pT);

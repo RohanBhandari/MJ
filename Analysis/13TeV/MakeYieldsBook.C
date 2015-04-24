@@ -23,7 +23,7 @@ ofstream fout;
 // Add one more since index starts at 0
 const int Nregions = 4  +1;
 const int Nbcuts = 3    +1;
-const int Njetcuts = 3  +1;
+const int Njetcuts = 2  +1;
 const int Nmetcuts = 2  +1;
 const int Nlepcuts = 2  +1;
 const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)  +1;
@@ -77,19 +77,19 @@ void PrintRegionBlock(int bCut, int nLep){
       for(int l= (1 + (j-1)*(Njetcuts-1)); l<=(j*(Njetcuts-1)); l++){      
 	totBkg_METbins[i][j] += total_Bkg[i][bCut][nLep][l];
 	totSig_METbins[i][j] += total_f1500_100[i][bCut][nLep][l];
-	totContam_METbins[i][j] += (total_f1500_100[i][bCut][nLep][l]*100.0)/(total_Bkg[i][bCut][nLep][l]+total_f1500_100[i][bCut][nLep][l]);
       }
+      totContam_METbins[i][j] = (totSig_METbins[i][j]*100.0)/(totBkg_METbins[i][j]+totSig_METbins[i][j]);
     }
   }
   
   fout<<"{\\color[rgb]{1,0,0}Region 3:} & "
-      << Form("\\bf{%.1f}",Bkg_RegTot[3]) << " & "
-      << Form("\\bf{%.1f}",Sig_RegTot[3]) << " & "
-      << Form("\\bf{%.1f}",tot_SigContam[3]) << " && "
+      << Form("\\textbf{%.1f}",Bkg_RegTot[3]) << " & "
+      << Form("\\textbf{%.1f}",Sig_RegTot[3]) << " & "
+      << Form("\\textbf{%.1f}",tot_SigContam[3]) << " && "
       <<"{\\color[rgb]{1,0,0}Region 4:} & "
-      << Form("\\bf{%.1f}",Bkg_RegTot[4]) << " & "
-      << Form("\\bf{%.1f}",Sig_RegTot[4]) << " & "
-      << Form("\\bf{%.1f}",tot_SigContam[4])
+      << Form("\\textbf{%.1f}",Bkg_RegTot[4]) << " & "
+      << Form("\\textbf{%.1f}",Sig_RegTot[4]) << " & "
+      << Form("\\textbf{%.1f}",tot_SigContam[4])
       <<" \\\\"<<"\n\\hline"<<endl;                
   
   for(int l=1; l<Nmetjetcuts; l++){
@@ -127,14 +127,14 @@ void PrintRegionBlock(int bCut, int nLep){
     
     if(l == (Njetcuts-1) || l == (2*(Njetcuts-1))){
       fout <<"\\hline"<<endl;
-      fout <<"\\bf{"<< metName <<"}"<< " & "
-	   <<"\\bf{"<< Form("%.1f",totBkg_METbins[3][metBin]) <<"}" << " & "
-	   <<"\\bf{"<< Form("%.1f",totSig_METbins[3][metBin]) <<"}" << " & "
-	   <<"\\bf{"<< Form("%.1f",totContam_METbins[3][metBin]) <<"}"
+      fout <<"\\textbf{"<< metName <<"}"<< " & "
+	   <<"\\textbf{"<< Form("%.1f",totBkg_METbins[3][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totSig_METbins[3][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totContam_METbins[3][metBin]) <<"}"
 	   << " && & "
-	   <<"\\bf{"<< Form("%.1f",totBkg_METbins[4][metBin]) <<"}" << " & "
-	   <<"\\bf{"<< Form("%.1f",totSig_METbins[4][metBin]) <<"}" << " & "
-	   <<"\\bf{"<< Form("%.1f",totContam_METbins[4][metBin]) <<"}"
+	   <<"\\textbf{"<< Form("%.1f",totBkg_METbins[4][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totSig_METbins[4][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totContam_METbins[4][metBin]) <<"}"
 	   <<" \\\\"<<endl;
       if(l == (Njetcuts-1)) fout<<"\\hline"<<endl;
     }
@@ -145,13 +145,13 @@ void PrintRegionBlock(int bCut, int nLep){
   fout<<"\\hline \\hline"<<endl;
   
   fout<<"{\\color[rgb]{1,0,0}Region 1:} & "
-      << Form("\\bf{%.1f}",Bkg_RegTot[1]) << " & "
-      << Form("\\bf{%.1f}",Sig_RegTot[1]) << " & "
-      << Form("\\bf{%.1f}",tot_SigContam[1]) << " && "
+      << Form("\\textbf{%.1f}",Bkg_RegTot[1]) << " & "
+      << Form("\\textbf{%.1f}",Sig_RegTot[1]) << " & "
+      << Form("\\textbf{%.1f}",tot_SigContam[1]) << " && "
       <<"{\\color[rgb]{1,0,0}Region 2:} & "
-      << Form("\\bf{%.1f}",Bkg_RegTot[2]) << " & "
-      << Form("\\bf{%.1f}",Sig_RegTot[2]) << " & "    
-      << Form("\\bf{%.1f}",tot_SigContam[2])
+      << Form("\\textbf{%.1f}",Bkg_RegTot[2]) << " & "
+      << Form("\\textbf{%.1f}",Sig_RegTot[2]) << " & "    
+      << Form("\\textbf{%.1f}",tot_SigContam[2])
       <<" \\\\"<<"\n\\hline"<<endl;                
   
   for(int l=1; l<Nmetjetcuts; l++){
@@ -181,9 +181,26 @@ void PrintRegionBlock(int bCut, int nLep){
 	 << Form("%.1f",total_f1500_100[2][bCut][nLep][l]) << " & "
 	 << Form("%.1f",sigContam[2][l])
 	 <<" \\\\"<<endl;
+
+    char* metName = "";
+    int metBin;
+    if(l == (Njetcuts-1)){  metName = "All Low MET"; metBin = 1; }
+    if(l == (2*(Njetcuts-1))){ metName = "All High MET"; metBin = 2; }
+    
+    if(l == (Njetcuts-1) || l == (2*(Njetcuts-1))){
+      fout <<"\\hline"<<endl;
+      fout <<"\\textbf{"<< metName <<"}"<< " & "
+	   <<"\\textbf{"<< Form("%.1f",totBkg_METbins[1][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totSig_METbins[1][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totContam_METbins[1][metBin]) <<"}"
+	   << " && & "
+	   <<"\\textbf{"<< Form("%.1f",totBkg_METbins[2][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totSig_METbins[2][metBin]) <<"}" << " & "
+	   <<"\\textbf{"<< Form("%.1f",totContam_METbins[2][metBin]) <<"}"
+	   <<" \\\\"<<endl;
+      if(l == (Njetcuts-1)) fout<<"\\hline"<<endl;
+    }    
   }
-  fout<<"\\hline \\hline"<<endl;
-  fout<<"\\end{tabular}"<<endl;
 }
 
 void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
@@ -287,20 +304,31 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
   //
   
   //Now we want to print this out in LaTeX
-  //Use with LaTeXiT, text format
+  //Use with LaTeXiT, text format 
   for(int j=1;j<Nlepcuts;j++){ 
     fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s_%iL.tex", babyName, babyName,j));
+    
+    fout<<"\\documentclass[12pt,article,oneside]{memoir}"<<endl;
+    fout<<"\\usepackage{color}"<<endl;
+    fout<<"\\usepackage[letterpaper, portrait, margin=0in]{geometry}"<<endl;
+    fout<<"\\begin{document}"<<endl;
+    fout<<"\\begin{table}[!htb]"<<endl;
+    fout<<"\\centering"<<endl;
+
     for(int i=1;i<Nbcuts; i++){
-      fout<<"\\centering"<<endl;
       fout<<"\\begin{tabular}{| c | c c | c || c || c | c c | c |}"<<endl;
-      fout<<Form("\\multicolumn{9}{c}{\\bf{%i Lepton}} \\\\",j)<<endl;
+      if(i==1 && j==1) fout<<Form("\\multicolumn{9}{c}{\\textbf{%i Lepton}} \\\\",j)<<endl;
       fout<<"\\hline \\hline"<<endl;
-      if(i!=Nbcuts-1) fout<<Form("\\bf{Nb=%i}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
-      if(i==Nbcuts-1) fout<<Form("\\bf{Nb=%i+}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
+      if(i!=Nbcuts-1) fout<<Form("\\textbf{Nb=%i}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
+      if(i==Nbcuts-1) fout<<Form("\\textbf{Nb=%i+}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
       fout<<"\\hline"<<endl;  
       PrintRegionBlock(i,j);
-      if(i!=Nbcuts-1) fout<<"\\newline \\newline"<<endl;
-    }   
+      fout<<"\\hline \\hline"<<endl;
+      fout<<"\\end{tabular}"<<endl;
+      if(i!=Nbcuts-1) fout<<"\n\\vspace{5mm}\n"<<endl;
+    }
+    fout<<"\\end{table}"<<endl;
+    fout<<"\\end{document}"<<endl;
     fout.close();
   }
 }

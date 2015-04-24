@@ -25,24 +25,25 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
     
-    //    TString BabyDir = "Phys14/";
-    TString BabyDir = "Phys14_HT500MET200/";  
+    TString BabyDir = "Phys14/";
+    //    TString BabyDir = "Phys14_HT500MET200/";  
+
+    TString babyName = "HT750MET250_MI";
+    //TString babyName = "HT750MET200_MI";
+
+    //TString babyName = "HT500MET250_MI";
+    //TString babyName = "HT500MET200_MI";
+
+    //    TString babyName = "HT750MET250Nsj4_MI";
+    //TString babyName = "HT750MET200Nsj4_MI";
+
+    //TString babyName = "HT500MET200Nsj4_MI";
+    
 
     //    TString babyName = "HT750MET250_NoMiniIso";
     //    TString babyName = "HT750MET250Nsj4_NoMiniIso";
     //TString babyName = "HT500MET250_NoMiniIso";
 
-    //TString babyName = "HT750MET250_MI";
-    //TString babyName = "HT750MET200_MI";
-
-    //TString babyName = "HT500MET250_MI";
-    TString babyName = "HT500MET200_MI";
-
-    //    TString babyName = "HT750MET250Nsj4_MI";
-    //TString babyName = "HT750MET200Nsj4_MI";
-
-    //    TString babyName = "HT500MET200Nsj4_MI";
-    
 
     // Data
     //ch_data->Add(BabyDir+"baby_MuHad_*.root");                            
@@ -77,13 +78,13 @@ void DoAnalysis(bool OnlyDraw=false)
 
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"
     //        
-    //TString Region[] = {"Baseline"}; 
+    //    TString Region[] = {"Baseline"}; 
     //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L","R3.2b.1M.1J.1L", "R3.2b.1M.2J.1L","R3.2b.2M.1J.1L", "R3.2b.2M.2J.1L"}; 
-    //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
+    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
     //    TString Region[] = {"R1", "R2", "R3", "R4"};     
     //TString Region[] = {"R3.1b.1M.1J.1L"}; 
-
-    //    /*    
+    
+    /*
     // Set regions for making the "yield book"
     //
     int nReg = 4;
@@ -93,12 +94,12 @@ void DoAnalysis(bool OnlyDraw=false)
     int nLepcut = 2;
 
     int idx=0;   
-    TString Region[96]; //int l =1
-    //TString Region[144]; //int l =0
+    //TString Region[96]; //int l =1
+    TString Region[144]; //int l =0
     for(int i=1; i<=nReg; i++){
       for(int j=1; j<=nBcut; j++){
 	for(int k=1; k<=nMetcut; k++){
-	  for(int l=1; l<=nJetcut; l++){
+	  for(int l=0; l<=nJetcut; l++){
 	    for(int m=1; m<=nLepcut; m++){
 	      Region[idx] = Form("R%i.%ib.%iM.%iJ.%iL",i,j,k,l,m);
 	      idx++;
@@ -107,8 +108,8 @@ void DoAnalysis(bool OnlyDraw=false)
 	}
       }
     }
-    //       
-    //    */
+    //           
+    */
 
     int NRegion = sizeof(Region)/sizeof(Region[0]);
 

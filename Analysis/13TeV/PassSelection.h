@@ -10,14 +10,15 @@ bool PassNLep(unsigned int Nlep)
 }
 
 // 
-bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny)
+bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny, int nGoodIsoTrks=0)
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
-  return  (HT>750 && MET>250 && Nskinny>5); //For yields book. No Nbtag cut
+  // Veto events with 1 or more isolated tracks (since now cleaned). Though right now we are interested in the 1 lep + iso trk case so we veto on 2+.
+  return  (HT>500 && MET>200 && Nskinny>3 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
 }
  
-// 
-bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float mT, float MJ)
+//
+bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float mT, float MJ, int nGoodIsoTrks)
 {
     bool passed=false;
 
@@ -26,53 +27,23 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
         && MET  > -1 
         && Nb   > -1 
         && Njet > -1 
-        && mT   > -1 
+        && mT   > -1
         && MJ   > -1 
     )  passed = true;
 
     //The following selections are for the synchronization exercise. Note that they may be redundant to the "SR"-labeled regions
     //
-    if((RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0){
-    if(Region=="R1" 
-        && HT   > -1
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   <=150 
-        && MJ   <=600 
-       )  passed = true;
-
-    if(Region=="R2" 
-        && HT   > -1
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   <=150 
-        && MJ   > 600 
-       )  passed = true;
-
-    if(Region=="R3" 
-        && HT   > -1
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   <=600 
-       )  passed = true;
-
-    if(Region=="R4" 
-        && HT   > -1
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 600 
-       )  passed = true; 
-    }
-    int Nlep = -1;
+    int Nlep = -5;
     
-    if((RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0)
+    // Nlep = 1/2 for 1/2 leptons + 0 veto + 0 isotrk. Nlep = 3/4 for 1 lepton + 1 veto lepton/iso trk
+
+    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==0) 
       Nlep = RA4MusPt_->size()+RA4ElsPt_->size();
+    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==1 && (nGoodIsoTrks)==0)
+      Nlep = 3;
+    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==1)
+      Nlep = 4;
+
 
     int MJMax = -1;
     int MJMin = -1;
@@ -134,8 +105,19 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
 	    }
 	    
 	    // Lep
-	    for(int m=1; m<=2; m++){	  
-	      NlepMax = m+1;  NlepMin = m;
+	    for(int m=1; m<=4; m++){	  
+	      if(m==1){ // 1 lepton
+		NlepMax = 2;  NlepMin = 1;
+	      }
+	      if(m==2){ // 2 lepton
+		NlepMax = 3;  NlepMin = 2;
+	      }
+	      if(m==3){ // 1 lepton + 1 veto
+		NlepMax = 4;  NlepMin = 3;
+	      }
+	      if(m==4){ //1 lepton + 1 iso trk
+		NlepMax = 5;  NlepMin = 4;
+	      }
             
 	      if(Region==Form("R%i.%ib.%iM.%iJ.%iL",i,j,k,l,m)
 		 && HT   >  -1

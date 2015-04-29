@@ -23,9 +23,9 @@ ofstream fout;
 // Add one more since index starts at 0
 const int Nregions = 4  +1;
 const int Nbcuts = 3    +1;
-const int Njetcuts = 2  +1;
+const int Njetcuts = 3  +1;
 const int Nmetcuts = 2  +1;
-const int Nlepcuts = 2  +1;
+const int Nlepcuts = 4  +1;
 const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)  +1;
 //const int Nmetjetcuts = 6  +1;
 
@@ -45,7 +45,6 @@ void PrintRegionBlock(int bCut, int nLep){
       Bkg_RegTot[i] += total_Bkg[i][bCut][nLep][l];
       Sig_RegTot[i] += total_f1500_100[i][bCut][nLep][l];
       sigContam[i][l] = (total_f1500_100[i][bCut][nLep][l]*100.0)/(total_Bkg[i][bCut][nLep][l] + total_f1500_100[i][bCut][nLep][l]);
-      //      sigContam[i][l] *= 100.0;      
     }
     /*    //DEBUG
 	  if(i==2){
@@ -56,17 +55,9 @@ void PrintRegionBlock(int bCut, int nLep){
 	  }*/
   }
 
-  /*  double sigContam[Nregions][Nmetjetcuts];
-      for(int i=1; i<Nregions; i++){
-      for(int l=1; l<Nmetjetcuts; l++){
-      sigContam[i][l] = total_f1500_100[i][bCut][nLep][l]/(total_Bkg[i][bCut][nLep][l] + total_f1500_100[i][bCut][nLep][l]);
-      sigContam[i][l] *= 100.0;
-      }
-      }*/
   double tot_SigContam[Nregions];
   for(int i=1; i<Nregions; i++){
     tot_SigContam[i] = (Sig_RegTot[i]*100.0)/(Sig_RegTot[i]+Bkg_RegTot[i]);
-    //tot_SigContam[i] *= 100.0;
   }
   
   double totBkg_METbins[Nregions][Nmetcuts];
@@ -209,10 +200,6 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
   
   // Indices: [Region][b-cut][lep-cut][4 MET and Njet bins]
   // Indices are 1 too large so that they match region/cut number (i.e. arrays start at 1)
-  //  double total_Bkg[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
-  //  double total_f1500_100[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
-  //  double total_f1200_800[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
-  
   double total_Bkg_err[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
   double total_f1500_100_err[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
   double total_f1200_800_err[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
@@ -305,19 +292,25 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
   
   //Now we want to print this out in LaTeX
   //Use with LaTeXiT, text format 
-  for(int j=1;j<Nlepcuts;j++){ 
-    fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s_%iL.tex", babyName, babyName,j));
+  fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s.tex", babyName, babyName));
     
-    fout<<"\\documentclass[12pt,article,oneside]{memoir}"<<endl;
-    fout<<"\\usepackage{color}"<<endl;
-    fout<<"\\usepackage[letterpaper, portrait, margin=0in]{geometry}"<<endl;
-    fout<<"\\begin{document}"<<endl;
-    fout<<"\\begin{table}[!htb]"<<endl;
-    fout<<"\\centering"<<endl;
+  fout<<"\\documentclass[11pt,article,oneside]{memoir}"<<endl;
+  fout<<"\\usepackage[letterpaper, portrait, margin=0in]{geometry}"<<endl;
+  fout<<"\\usepackage{color}"<<endl;
+  fout<<"\\usepackage{caption}"<<endl;
+  fout<<"\\begin{document}"<<endl;
 
+  for(int j=1;j<Nlepcuts;j++){ 
+    fout<<"\\begin{table}[!htb]"<<endl;
+    if(Njetcuts==2+1) fout<<"\\large"<<endl;
+    if(Njetcuts==3+1) fout<<"\\footnotesize"<<endl;
+    fout<<"\\centering"<<endl;
     for(int i=1;i<Nbcuts; i++){
       fout<<"\\begin{tabular}{| c | c c | c || c || c | c c | c |}"<<endl;
       if(i==1 && j==1) fout<<Form("\\multicolumn{9}{c}{\\textbf{%i Lepton}} \\\\",j)<<endl;
+      if(i==1 && j==2) fout<<Form("\\multicolumn{9}{c}{\\textbf{%i Leptons}} \\\\",j)<<endl;
+      if(i==1 && j==3) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 1 Veto Lepton}} \\\\",j)<<endl;
+      if(i==1 && j==4) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 1 Iso Trk}} \\\\",j)<<endl;
       fout<<"\\hline \\hline"<<endl;
       if(i!=Nbcuts-1) fout<<Form("\\textbf{Nb=%i}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
       if(i==Nbcuts-1) fout<<Form("\\textbf{Nb=%i+}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
@@ -325,10 +318,13 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
       PrintRegionBlock(i,j);
       fout<<"\\hline \\hline"<<endl;
       fout<<"\\end{tabular}"<<endl;
-      if(i!=Nbcuts-1) fout<<"\n\\vspace{5mm}\n"<<endl;
+      if(i!=Nbcuts-1) fout<<"\n\\vspace{3mm}\n"<<endl;
     }
+    fout<<"\\vspace{-3mm}"<<endl;
+    fout<<"\\caption*{"<<babyName<<"}"<<endl;
     fout<<"\\end{table}"<<endl;
-    fout<<"\\end{document}"<<endl;
-    fout.close();
+    if(j!=Nlepcuts-1) fout<<"\n\\pagebreak\n"<<endl;
   }
+  fout<<"\\end{document}"<<endl;
+  fout.close();
 }

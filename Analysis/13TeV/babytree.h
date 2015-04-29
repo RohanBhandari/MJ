@@ -30,7 +30,11 @@
     vector<float>   *JetPhi_;
     vector<float>   *JetCSV_;
     vector<float>   *RA4MusVetoPt_;
+    vector<float>   *RA4MusVetoEta_;
+    vector<float>   *RA4MusVetoPhi_;
     vector<float>   *RA4ElsVetoPt_;
+    vector<float>   *RA4ElsVetoEta_;
+    vector<float>   *RA4ElsVetoPhi_;
     vector<float>   *GenPt_;
     vector<float>   *GenEta_;
     vector<float>   *GenPhi_;
@@ -83,7 +87,11 @@
     TBranch         *b_JetPhi;   //!
     TBranch         *b_JetCSV;   //!
     TBranch         *b_RA4MusVetoPt;   //!
+    TBranch         *b_RA4MusVetoEta;   //!
+    TBranch         *b_RA4MusVetoPhi;   //!
     TBranch         *b_RA4ElsVetoPt;   //!
+    TBranch         *b_RA4ElsVetoEta;   //!
+    TBranch         *b_RA4ElsVetoPhi;   //!
     TBranch         *b_GenPt;   //!
     TBranch         *b_GenEta;   //!
     TBranch         *b_GenPhi;   //!
@@ -126,7 +134,11 @@ void InitBaby(TChain *ch)
     JetPhi_ = 0;
     JetCSV_ = 0;
     RA4MusVetoPt_  = 0;
+    RA4MusVetoEta_  = 0;
+    RA4MusVetoPhi_  = 0;
     RA4ElsVetoPt_  = 0;
+    RA4ElsVetoEta_  = 0;
+    RA4ElsVetoPhi_  = 0;
     GenPt_  = 0;
     GenEta_  = 0;
     GenPhi_  = 0;
@@ -160,8 +172,7 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("FatjetPt_pT30",   &FatjetPt_,      &b_FatjetPt);
     ch->SetBranchAddress("FatjetEta_pT30",  &FatjetEta_,     &b_FatjetEta);
     ch->SetBranchAddress("FatjetPhi_pT30",  &FatjetPhi_,     &b_FatjetPhi);
-    //ch->SetBranchAddress("FatjetN_pT30",    &FatjetN_,       &b_FatjetN);
-
+    
     // vvvvvvvvvvvvvvvvvvvvvvvvvvvvv for different R(FJ) vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     //    ch->SetBranchAddress("mj_R1p2_pT30_Eta2p5",         &mj_,            &b_mj);
     //    ch->SetBranchAddress("FatjetPt_R1p2_pT30_Eta2p5",   &FatjetPt_,      &b_FatjetPt);
@@ -194,7 +205,11 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("JetEta_mi",          &JetEta_,        &b_JetEta);
     ch->SetBranchAddress("JetCSV_mi",          &JetCSV_,        &b_JetCSV);
     ch->SetBranchAddress("RA4MusVetoPt_mi",    &RA4MusVetoPt_,  &b_RA4MusVetoPt);
+    ch->SetBranchAddress("RA4MusVetoEta_mi",   &RA4MusVetoEta_, &b_RA4MusVetoEta);
+    ch->SetBranchAddress("RA4MusVetoPhi_mi",   &RA4MusVetoPhi_, &b_RA4MusVetoPhi);
     ch->SetBranchAddress("RA4ElsVetoPt_mi",    &RA4ElsVetoPt_,  &b_RA4ElsVetoPt);
+    ch->SetBranchAddress("RA4ElsVetoEta_mi",   &RA4ElsVetoEta_, &b_RA4ElsVetoEta);
+    ch->SetBranchAddress("RA4ElsVetoPhi_mi",   &RA4ElsVetoPhi_, &b_RA4ElsVetoPhi);
     // vvvvvvvvvvvvvvvvvvvvvvvvvvvvv With Mini Iso vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
     ch->SetBranchAddress("GenPt",           &GenPt_,         &b_GenPt);

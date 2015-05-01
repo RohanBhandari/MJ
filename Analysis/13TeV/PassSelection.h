@@ -14,7 +14,7 @@ bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny, int nGoo
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
   // Veto events with 1 or more isolated tracks (since now cleaned). Though right now we are interested in the 1 lep + iso trk case so we veto on 2+.
-  return  (HT>750 && MET>250 && Nskinny>5 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
+  return  (HT>750 && MET>250 && Nskinny>4 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
 }
  
 //
@@ -98,7 +98,7 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
 	      NjMax = 5;	    NjMin = 5;
 	    }
 	    if(l==1){
-	      NjMax = 7;	    NjMin = 6;
+	      NjMax = 7;	    NjMin = 5;
 	    }
 	    if(l==2){
 	      NjMax = 99999;  NjMin = 8;

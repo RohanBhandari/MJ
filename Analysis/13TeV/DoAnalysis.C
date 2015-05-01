@@ -25,8 +25,8 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
     
-    TString BabyDir = "Phys14/";
-    //TString BabyDir = "Phys14_HT500MET200/";  
+    //TString BabyDir = "Phys14/";
+    TString BabyDir = "Phys14_HT500MET200/";  
 
     //    TString babyName = "Test";
 
@@ -51,16 +51,16 @@ void DoAnalysis(bool OnlyDraw=false)
 
     //MINI ISOLATION + Iso Trk Veto
 
-    TString babyName = "HT750MET250-MI+ITV";
+    //TString babyName = "HT750MET250-MI+ITV";
     //TString babyName = "HT750MET200-MI+ITV";
 
     //TString babyName = "HT500MET250-MI+ITV";
     //TString babyName = "HT500MET200-MI+ITV";
 
-    //TString babyName = "HT750MET250Nsj5-MI+ITV";       ///Change nJetStart///
-    //TString babyName = "HT750MET200Nsj5-MI+ITV";
+    TString babyName = "HT750MET250Nsj5-MI+ITV";       ///Change nJetStart///
+    //    TString babyName = "HT750MET200Nsj5-MI+ITV";
 
-    //    TString babyName = "HT500MET200Nsj5-MI+ITV";    
+    //TString babyName = "HT500MET200Nsj5-MI+ITV";    
 
    
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"

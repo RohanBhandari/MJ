@@ -23,13 +23,14 @@ ofstream fout;
 // Add one more since index starts at 0
 const int Nregions = 4  +1;
 const int Nbcuts = 3    +1;
-const int Njetcuts = 3  +1;
+const int Njetcuts = 2  +1;
 const int Nmetcuts = 2  +1;
 const int Nlepcuts = 4  +1;
 const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)  +1;
-//const int Nmetjetcuts = 6  +1;
 
-// Indices: [Region][b-cut][lep-cut][4 MET and Njet bins]
+const char* sigType = "T1tttt[1500,100]";
+//const char* sigType = "T1tttt[1200,800]";
+
 // Indices are 1 too large so that they match region/cut number (i.e. arrays start at 1)
 double total_Bkg[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
 double total_f1500_100[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
@@ -87,9 +88,9 @@ void PrintRegionBlock(int bCut, int nLep){
     
     char* cutName = "";
     if(Nmetjetcuts == 4+1){
-      if(l==1) cutName = "Low MET, Med Njet";
+      if(l==1) cutName = "Low MET, Low Njet";
       if(l==2) cutName = "Low MET, High Njet";
-      if(l==3) cutName = "High MET, Med Njet";
+      if(l==3) cutName = "High MET, Low Njet";
       if(l==4) cutName = "High MET, High Njet";
     }
     if(Nmetjetcuts == 6+1){
@@ -149,9 +150,9 @@ void PrintRegionBlock(int bCut, int nLep){
     
     char* cutName = "";
     if(Nmetjetcuts == 4+1){
-      if(l==1) cutName = "Low MET, Med Njet";
+      if(l==1) cutName = "Low MET, Low Njet";
       if(l==2) cutName = "Low MET, High Njet";
-      if(l==3) cutName = "High MET, Med Njet";
+      if(l==3) cutName = "High MET, Low Njet";
       if(l==4) cutName = "High MET, High Njet";
     }
     if(Nmetjetcuts == 6+1){
@@ -252,15 +253,7 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
       if(d==2 && e==1) f = 5;
       if(d==2 && e==2) f = 6;
     }
-    /*    if(Nmetcuts == 3+1 && Njetcuts == 2+1){
-	  if(d==1 && e==0) f = 1;
-	  if(d==1 && e==1) f = 2;
-	  if(d==1 && e==2) f = 3;
-	  if(d==2 && e==0) f = 4;
-	  if(d==2 && e==1) f = 5;
-	  if(d==2 && e==2) f = 6;
-	  }*/
-    
+
     if(f == -1) cout<<"THERE IS A PROBLEM WITH CHAR TO INT. f = -1"<<endl;
     
     total_Bkg[a][b][c][f] = h1_MC->IntegralAndError(1,10000,total_Bkg_err[a][b][c][f]);
@@ -321,7 +314,7 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
       if(i!=Nbcuts-1) fout<<"\n\\vspace{3mm}\n"<<endl;
     }
     fout<<"\\vspace{-3mm}"<<endl;
-    fout<<"\\caption*{"<<babyName<<"}"<<endl;
+    fout<<Form("\\caption*{%s: %s}",babyName,sigType)<<endl;
     fout<<"\\end{table}"<<endl;
     if(j!=Nlepcuts-1) fout<<"\n\\pagebreak\n"<<endl;
   }

@@ -1041,7 +1041,7 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         */
 
         vector<float> Vector_mj_pT30;   // mj
-        for(int ifj=0; ifj<fjets30_m->size(); ifj++) 
+        for(unsigned int ifj=0; ifj<fjets30_m->size(); ifj++) 
         {
             Vector_mj_pT30.push_back(fjets30_m->at(ifj));
         }
@@ -1265,7 +1265,7 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         // Cluster GenJet to make FJ 
         //
         vector<TLorentzVector> GenFatJetConstituent; 
-        for(int imcjet=0; imcjet<mc_jets_pt->size(); imcjet++) 
+        for(unsigned int imcjet=0; imcjet<mc_jets_pt->size(); imcjet++) 
         {
             float px_tmp = mc_jets_pt->at(imcjet)*TMath::Cos(mc_jets_phi->at(imcjet));; 
             float py_tmp = mc_jets_pt->at(imcjet)*TMath::Sin(mc_jets_phi->at(imcjet));; 
@@ -1523,14 +1523,14 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
                 }
             }
         }
-        for(int igenjet=0; igenjet<jets_AK4_gen_pt->size(); igenjet++) 
+        for(unsigned int igenjet=0; igenjet<jets_AK4_gen_pt->size(); igenjet++) 
         { 
             GenJetPt_.push_back(jets_AK4_gen_pt->at(igenjet)); 
             //GenJetEta_.push_back(jets_AK4_gen_eta->at(igenjet)); 
             //GenJetPhi_.push_back(jets_AK4_gen_phi->at(igenjet)); 
         }
         GenMET_                =   pfType1mets_gen_et->at(0);
-        for(int imcjet=0; imcjet<mc_jets_pt->size(); imcjet++) 
+        for(unsigned int imcjet=0; imcjet<mc_jets_pt->size(); imcjet++) 
         { 
             MCJetE_.push_back(mc_jets_energy->at(imcjet)); 
             MCJetPt_.push_back(mc_jets_pt->at(imcjet)); 

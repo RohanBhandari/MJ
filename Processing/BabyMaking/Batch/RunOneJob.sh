@@ -6,7 +6,7 @@ BEGINFILE=$3
 ENDFILE=$4
 ISDATA=$5
 LUMI=$6
-tmpdir=/data2/jaehyeok/$$
+tmpdir=/data2/rohan/$$
 
 echo "[BabyMaker] Input directory   : $DIR"
 echo "[BabyMaker] RECOGNIZER        : $RECOGNIZER"
@@ -37,12 +37,8 @@ echo "[DEBUG] Run from the file $BEGINFILE for $NFILEPERJOB files"
 echo "[DEBUG] Run the macro "
 
 $ROOTSYS/bin/root -b -q DoOneProcess13TeV.C++\(\"$DIR\",\"$RECOGNIZER\",$BEGINFILE,$ENDFILE,$ISDATA,$LUMI\) 
-echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV"
-cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV 
-
-#$ROOTSYS/bin/root -b -q DoOneProcess.C++\(\"$DIR\",\"$RECOGNIZER\",$BEGINFILE,$ENDFILE,$ISDATA,$LUMI\) 
-#echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/jaehyeok/baby/Fatjet"
-#cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/cms26/cms26r0/jaehyeok/baby/Fatjet 
+echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/rohan/Babies"
+cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/cms26/cms26r0/rohan/Babies 
 
 echo "[DEBUG] Clean up"
 cd $tmpdir 

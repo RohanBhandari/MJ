@@ -6,7 +6,7 @@ BEGINFILE=$3
 ENDFILE=$4
 ISDATA=$5
 LUMI=$6
-tmpdir=/data2/rohan/$$
+tmpdir=/data2/heller/$$
 
 echo "[BabyMaker] Input directory   : $DIR"
 echo "[BabyMaker] RECOGNIZER        : $RECOGNIZER"
@@ -27,7 +27,8 @@ tar xvf fastjet-install.tar
 cd fastjet-3.0.6_Batch/example/MJ
 
 echo "[BabyMaker] Copy and set up working directory"
-cp -r /homes/jaehyeok/Analysis/MJ/fastjet-3.0.6/example/MJGit/MJ/Processing/BabyMaking/Batch . 
+#cp -r /homes/jaehyeok/Analysis/MJ/fastjet-3.0.6/example/MJGit/MJ/Processing/BabyMaking/Batch . 
+cp -r /homes/heller/Babies/MJ/Processing/BabyMaking/Batch .
 cd Batch
 ln -sf ../../../../fastjet-install/include/fastjet
 ln -sf ../../../../fastjet-install/lib/libfastjet.so
@@ -37,8 +38,12 @@ echo "[DEBUG] Run from the file $BEGINFILE for $NFILEPERJOB files"
 echo "[DEBUG] Run the macro "
 
 $ROOTSYS/bin/root -b -q DoOneProcess13TeV.C++\(\"$DIR\",\"$RECOGNIZER\",$BEGINFILE,$ENDFILE,$ISDATA,$LUMI\) 
-echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/rohan/Babies"
-cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/cms26/cms26r0/rohan/Babies 
+echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV"
+cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/top/homes/heller/Babies/MJ/Processing/BabyMaking/Batch
+
+#$ROOTSYS/bin/root -b -q DoOneProcess.C++\(\"$DIR\",\"$RECOGNIZER\",$BEGINFILE,$ENDFILE,$ISDATA,$LUMI\) 
+#echo "[DEBUG] Copy baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root to /net/cms26/cms26r0/jaehyeok/baby/Fatjet"
+#cp baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root /net/cms26/cms26r0/jaehyeok/baby/Fatjet 
 
 echo "[DEBUG] Clean up"
 cd $tmpdir 

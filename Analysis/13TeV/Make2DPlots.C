@@ -27,7 +27,7 @@ void h2cosmetic(TH2F* &h2, char* title, TString Xvar="", TString Yvar="", TStrin
 //
 void Make2DPlots(TString HistName, char* Region, int NMergeBins=1, bool doRatio=false) 
 { 
-    TFile* HistFile = TFile::Open("HistFiles/Hist.root");
+    TFile* HistFile = TFile::Open("~/cms26/MJ_Out/HistFiles/Hist.root");
    
     char *Xvar, *Yvar, *Zvar; 
     if(HistName=="mjvsmj")
@@ -84,9 +84,9 @@ void Make2DPlots(TString HistName, char* Region, int NMergeBins=1, bool doRatio=
         c_TT_ll->cd(i-1);
         h2_TT_ll[i]->Draw("colz");
     
-        c_TT_sl->Print( Form("Output/Figures/%s/2D_TT_sl_%s%s.png", 
+        c_TT_sl->Print( Form("~/cms26/MJ_Out/Output/Figures/%s/2D_TT_sl_%s%s.png", 
                         Region, HistName.Data(), DoLog?"_log":"") ); 
-        c_TT_ll->Print( Form("Output/Figures/%s/2D_TT_ll_%s%s.png", 
+        c_TT_ll->Print( Form("~/cms26/MJ_Out/Output/Figures/%s/2D_TT_ll_%s%s.png", 
                         Region, HistName.Data(), DoLog?"_log":"") ); 
     }
   
@@ -104,7 +104,7 @@ void Make2DPlots(TString HistName, char* Region, int NMergeBins=1, bool doRatio=
             h2_Ratio[i]->SetMinimum(0.5);
             h2_Ratio[i]->SetMaximum(1.5);
             h2_Ratio[i]->Draw("colz");
-            c_Ratio->Print( Form("Output/Figures/%s/2D_Ratio_%s%s.png",
+            c_Ratio->Print( Form("~/cms26/MJ_Out/Output/Figures/%s/2D_Ratio_%s%s.png",
                             Region, HistName.Data(), DoLog?"_log":"") ); 
         } 
     }

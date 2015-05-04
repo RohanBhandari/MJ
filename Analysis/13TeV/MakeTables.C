@@ -164,7 +164,7 @@ void MakeTables(int lepflav=0, const char* Region="", const char* babyName="", b
 
     TString HistName="yields";
 
-    TFile* HistFile = TFile::Open(Form("HistFiles/YieldsBook/%s/Hist_%s.root", babyName, Region));
+    TFile* HistFile = TFile::Open(Form("~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root", babyName, Region));
         
     TH1F *h1_DATA[7], *h1_T[7], *h1_TT_sl[7], *h1_TT_ll[7], *h1_WJets[7], *h1_DY[7], *h1_MC[7];
     TH1F *h1_f1500_100[7], *h1_f1200_800[7];
@@ -265,7 +265,7 @@ void MakeTables(int lepflav=0, const char* Region="", const char* babyName="", b
     bool printTxt = true;
 
     if(printLatex){
-      fout.open(Form("Output/YieldsBook/Tables/%s/TableOfYields_%s.tex", babyName, Region));
+      fout.open(Form("/net/cms26/cms26r0/rohan/MJ_Out/Output/YieldsBook/Tables/%s/TableOfYields_%s.tex", babyName, Region));
 
       fout << "\\begin{table}[!htb]" << endl;
       fout << "\\centering" << endl;
@@ -327,7 +327,7 @@ void MakeTables(int lepflav=0, const char* Region="", const char* babyName="", b
     }
 
     if(printTxt){
-      fout.open(Form("Output/YieldsBook/Tables/%s/TableOfYields_%s.txt", babyName, Region));
+      fout.open(Form("/net/cms26/cms26r0/rohan/MJ_Out/Output/YieldsBook/Tables/%s/TableOfYields_%s.txt", babyName, Region));
 
       lepflav=0;
       fout<<"Yields for Electron+Muon"<<endl;

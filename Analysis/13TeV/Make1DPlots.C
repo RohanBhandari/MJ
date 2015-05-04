@@ -56,7 +56,7 @@ void Make1DPlots(TString HistName, char* Region, int NMergeBins=1)
 { 
     gInterpreter->ExecuteMacro("JaeStyle.C");
 
-    TFile* HistFile = TFile::Open(Form("HistFiles/Hist_%s.root", Region));
+    TFile* HistFile = TFile::Open(Form("~/cms26/MJ_Out/HistFiles/Hist_%s.root", Region));
    
     char *var; 
     if(HistName=="dRlep")                 	var=(char*)"dR(lepton,FJ)";
@@ -267,7 +267,7 @@ void Make1DPlots(TString HistName, char* Region, int NMergeBins=1)
 
     // 
     if(HistName=="mj") HistName="JetMass";
-    c->Print( Form("Output/Figures/%s/CompareDataMC_%s_%s%s.png", Region, HistName.Data(), Region, DoLog?"_log":"") ); 
+    c->Print( Form("~/cms26/MJ_Out/Output/Figures/%s/CompareDataMC_%s_%s%s.png", Region, HistName.Data(), Region, DoLog?"_log":"") ); 
     
     // 
     HistFile->Close();

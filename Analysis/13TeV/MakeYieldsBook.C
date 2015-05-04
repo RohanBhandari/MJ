@@ -207,7 +207,7 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
   
   for(int iFile=0; iFile<Nselections; iFile++){
     
-    HistFile[iFile] = TFile::Open(Form("HistFiles/YieldsBook/%s/Hist_%s.root", babyName, Region[iFile].Data()));
+    HistFile[iFile] = TFile::Open(Form("/net/cms26/cms26r0/rohan/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root", babyName, Region[iFile].Data()));
     
     TH1F *h1_DATA, *h1_T, *h1_TT_sl, *h1_TT_ll, *h1_WJets, *h1_DY, *h1_MC;
     TH1F *h1_f1500_100, *h1_f1200_800;
@@ -285,7 +285,7 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
   
   //Now we want to print this out in LaTeX
   //Use with LaTeXiT, text format 
-  fout.open(Form("Output/YieldsBook/Tables/%s/TotalYields_%s.tex", babyName, babyName));
+  fout.open(Form("/net/cms26/cms26r0/rohan/MJ_Out/Output/YieldsBook/Tables/%s/TotalYields_%s.tex", babyName, babyName));
     
   fout<<"\\documentclass[11pt,article,oneside]{memoir}"<<endl;
   fout<<"\\usepackage[letterpaper, portrait, margin=0in]{geometry}"<<endl;

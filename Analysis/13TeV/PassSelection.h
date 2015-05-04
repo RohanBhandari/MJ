@@ -14,7 +14,8 @@ bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny, int nGoo
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
   // Veto events with 1 or more isolated tracks (since now cleaned). Though right now we are interested in the 1 lep + iso trk case so we veto on 2+.
-  return  (HT>750 && MET>250 && Nskinny>4 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
+  //  return  (HT>750 && MET>250 && Nskinny>5 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
+  return  (HT>750 && MET>250 && Nskinny>5); //For yields book. No Nbtag cut
 }
  
 //
@@ -37,12 +38,13 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
     
     // Nlep = 1/2 for 1/2 leptons + 0 veto + 0 isotrk. Nlep = 3/4 for 1 lepton + 1 veto lepton/iso trk
 
-    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==0) 
+    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0) 
+      //    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==0) 
       Nlep = RA4MusPt_->size()+RA4ElsPt_->size();
-    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==1 && (nGoodIsoTrks)==0)
-      Nlep = 3;
-    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==1)
-      Nlep = 4;
+    //    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==1 && (nGoodIsoTrks)==0)
+    //      Nlep = 3;
+    //    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==1)
+    //      Nlep = 4;
 
 
     int MJMax = -1;

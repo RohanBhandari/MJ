@@ -25,10 +25,9 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
     
-    //TString BabyDir = "Phys14/";
-    TString BabyDir = "Phys14_HT500MET200/";  
+    TString BabyDir = "Phys14/";
 
-    //    TString babyName = "Test";
+    TString babyName = "Test";
 
     //NO MINI ISO
 
@@ -57,7 +56,7 @@ void DoAnalysis(bool OnlyDraw=false)
     //TString babyName = "HT500MET250-MI+ITV";
     //TString babyName = "HT500MET200-MI+ITV";
 
-    TString babyName = "HT750MET250Nsj5-MI+ITV";       ///Change nJetStart///
+    //TString babyName = "HT750MET250Nsj5-MI+ITV";       ///Change nJetStart///
     //    TString babyName = "HT750MET200Nsj5-MI+ITV";
 
     //TString babyName = "HT500MET200Nsj5-MI+ITV";    
@@ -66,13 +65,15 @@ void DoAnalysis(bool OnlyDraw=false)
     // Loop over SR and CR : make sure that these regions exist in "PassSelection.h"
     //        
     //TString Region[] = {"Baseline"}; 
-    //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L","R3.2b.1M.1J.1L", "R3.2b.1M.2J.1L","R3.2b.2M.1J.1L", "R3.2b.2M.2J.1L"}; 
-    //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
+    //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L","R3.2b.1M.1J.1L", "R3.2b.1M.2J.1L","R3.2b.2M.1J.1L", "R3.2b.2M.2J.1L"}; 
+    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
     //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.1J.2L","R3.1b.1M.1J.3L", "R3.1b.1M.1J.4L"}; 
     //    TString Region[] = {"R1", "R2", "R3", "R4"};     
-    //TString Region[] = {"R4.1b.1M.1J.1L"}; 
+    //    TString Region[] = {"R4.1b.1M.1J.1L"}; 
+
+    int NRegion = sizeof(Region)/sizeof(Region[0]);
     
-    ///*
+    /*
     // Set regions for making the "yield book"
     //
     int nReg = 4;
@@ -104,7 +105,7 @@ void DoAnalysis(bool OnlyDraw=false)
       }
     }
     //           
-    //*/
+    */
 
     // Data
     //ch_data->Add(BabyDir+"baby_MuHad_*.root");                            
@@ -142,7 +143,7 @@ void DoAnalysis(bool OnlyDraw=false)
         cout << "[MJ Analysis] Analyzing " << Region[iregion].Data() << endl;
         cout << endl;
         cout << "[MJ Analysis] Making directory for figures : Figures/" << Region[iregion].Data() << endl;
-        gSystem->mkdir(Form("Output/YieldsBook/Figures/%s",Region[iregion].Data())); 
+        gSystem->mkdir(Form("~/cms26/MJ_Out/Output/YieldsBook/Figures/%s",Region[iregion].Data())); 
 
         if(!OnlyDraw) 
         {
@@ -162,11 +163,11 @@ void DoAnalysis(bool OnlyDraw=false)
             //  Make the final histogram file
             // ----------------------------------------
 	    cout << "[MJ Analysis] Merging result files" << endl;
-            gSystem->Exec(Form("rm HistFiles/YieldsBook/%s/Hist_%s.root", babyName.Data(), Region[iregion].Data()));
-            gSystem->Exec(Form("hadd -f HistFiles/YieldsBook/%s/Hist_%s.root HistFiles/YieldsBook/%s/*_%s.root", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data()));
-            gSystem->Exec(Form("mv HistFiles/YieldsBook/%s/Hist_%s.root HistFiles/YieldsBook/%s/Hist_%s.root.tmp", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data()));
-            gSystem->Exec(Form("rm HistFiles/YieldsBook/%s/*_%s.root", babyName.Data(), Region[iregion].Data()));
-            gSystem->Exec(Form("mv HistFiles/YieldsBook/%s/Hist_%s.root.tmp HistFiles/YieldsBook/%s/Hist_%s.root", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data())); 
+            gSystem->Exec(Form("rm ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root", babyName.Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("hadd -f ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/*_%s.root", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("mv ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root.tmp", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("rm ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/*_%s.root", babyName.Data(), Region[iregion].Data()));
+            gSystem->Exec(Form("mv ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root.tmp ~/cms26/MJ_Out/HistFiles/YieldsBook/%s/Hist_%s.root", babyName.Data(), Region[iregion].Data(), babyName.Data(), Region[iregion].Data())); 
         }
 
         // ----------------------------------------

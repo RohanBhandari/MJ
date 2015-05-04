@@ -27,17 +27,11 @@ void DoAnalysis(bool OnlyDraw=false)
     
     TString BabyDir = "Phys14/";
 
-    TString babyName = "Test";
-
-    //NO MINI ISO
-
-    //    TString babyName = "HT750MET250_NoMiniIso";
-    //    TString babyName = "HT750MET250Nsj4_NoMiniIso";
-    //TString babyName = "HT500MET250_NoMiniIso";
+    //    TString babyName = "Test";
 
     //MINI ISOLATION
 
-    //    TString babyName = "HT750MET250_MI";
+    TString babyName = "HT750MET250_MI";
     //TString babyName = "HT750MET200_MI";
 
     //TString babyName = "HT500MET250_MI";
@@ -66,14 +60,14 @@ void DoAnalysis(bool OnlyDraw=false)
     //        
     //TString Region[] = {"Baseline"}; 
     //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L","R3.2b.1M.1J.1L", "R3.2b.1M.2J.1L","R3.2b.2M.1J.1L", "R3.2b.2M.2J.1L"}; 
-    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
+    //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
     //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.1J.2L","R3.1b.1M.1J.3L", "R3.1b.1M.1J.4L"}; 
     //    TString Region[] = {"R1", "R2", "R3", "R4"};     
     //    TString Region[] = {"R4.1b.1M.1J.1L"}; 
 
-    int NRegion = sizeof(Region)/sizeof(Region[0]);
+    //int NRegion = sizeof(Region)/sizeof(Region[0]);
     
-    /*
+    
     // Set regions for making the "yield book"
     //
     int nReg = 4;
@@ -105,7 +99,7 @@ void DoAnalysis(bool OnlyDraw=false)
       }
     }
     //           
-    */
+    
 
     // Data
     //ch_data->Add(BabyDir+"baby_MuHad_*.root");                            

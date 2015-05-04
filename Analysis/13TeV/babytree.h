@@ -162,11 +162,11 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("Npu",             &Npu_,           &b_Npu);
     ch->SetBranchAddress("Npv",             &Npv_,           &b_Npv);
     ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
-    ch->SetBranchAddress("Nskinnyjet",      &Nskinnyjet_,    &b_Nskinnyjet);
-    ch->SetBranchAddress("NBtagCSVM",       &NBtagCSVM_,     &b_NBtagCSVM);
+    ch->SetBranchAddress("Nskinnyjet_mini", &Nskinnyjet_,    &b_Nskinnyjet);
+    ch->SetBranchAddress("NBtagCSVM_mini",  &NBtagCSVM_,     &b_NBtagCSVM);
     ch->SetBranchAddress("MJ_pT30",         &MJ_,            &b_MJ);
     ch->SetBranchAddress("MET",             &MET_,           &b_MET);
-    ch->SetBranchAddress("HT",              &HT_,            &b_HT);
+    ch->SetBranchAddress("HT_mini",         &HT_,            &b_HT);
     ch->SetBranchAddress("METPhi",          &METPhi_,        &b_METPhi);
     ch->SetBranchAddress("mj_pT30",         &mj_,            &b_mj);
     ch->SetBranchAddress("FatjetPt_pT30",   &FatjetPt_,      &b_FatjetPt);

@@ -1474,7 +1474,7 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         }
         for(unsigned int iisotrkels=0; iisotrkels<eCands.size(); iisotrkels++) 
         {
-            if(eCands.at(iisotrkels).second>0.2) continue;
+            if(eCands.at(iisotrkels).second>=0.2) continue;
             unsigned int ipfcand = eCands.at(iisotrkels).first;
             IsoTrkVetoElsPt_.push_back(pfcand_pt->at(ipfcand));
             IsoTrkVetoElsEta_.push_back(pfcand_eta->at(ipfcand));
@@ -1482,7 +1482,7 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         }
         for(unsigned int iisotrkmus=0; iisotrkmus<muCands.size(); iisotrkmus++) 
         {
-            if(muCands.at(iisotrkmus).second>0.2) continue;
+            if(muCands.at(iisotrkmus).second>=0.2) continue;
             unsigned int ipfcand = muCands.at(iisotrkmus).first;
             IsoTrkVetoMusPt_.push_back(pfcand_pt->at(ipfcand));
             IsoTrkVetoMusEta_.push_back(pfcand_eta->at(ipfcand));
@@ -1490,7 +1490,7 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         }
         for(unsigned int iisotrkhad=0; iisotrkhad<hadCands.size(); iisotrkhad++) 
         {
-            if(hadCands.at(iisotrkhad).second>0.1) continue;
+            if(hadCands.at(iisotrkhad).second>=0.1) continue;
             unsigned int ipfcand = hadCands.at(iisotrkhad).first;
             IsoTrkVetoHadPt_.push_back(pfcand_pt->at(ipfcand));
             IsoTrkVetoHadEta_.push_back(pfcand_eta->at(ipfcand));

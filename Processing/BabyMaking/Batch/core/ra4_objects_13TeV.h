@@ -42,7 +42,6 @@ double getDZ(double vx, double vy, double vz, double px, double py, double pz, i
 // 
 double GetIsolation(const int ilep, const int ParticleType, const double rmax, const bool mini, const bool addCH, const bool addPH, const bool addNH, const bool usePFweight) 
 { 
-
     double ptThresh(0.5);
     double lep_pt(0.), lep_eta(0.), lep_phi(0.), deadcone_nh(0.), deadcone_ch(0.), deadcone_ph(0.), deadcone_pu(0.);;
     if(ParticleType==11) {
@@ -67,7 +66,6 @@ double GetIsolation(const int ilep, const int ParticleType, const double rmax, c
     bool need_pfweight = false;
     if(usePFweight) need_pfweight = true;
 
-    double riso_max = std::max(0.4,10./lep_pt);
     // find the PF cands that matches the lepton
     double drmin = DBL_MAX;
     uint match_index = 9999999;
@@ -97,7 +95,7 @@ double GetIsolation(const int ilep, const int ParticleType, const double rmax, c
                 || isnan(pfcand_eta->at(icand))
                 || isnan(pfcand_phi->at(icand))) continue;
         double dr = getDR(pfcand_eta->at(icand), lep_eta, pfcand_phi->at(icand), lep_phi);
-        if (dr > riso_max) continue;
+        if (dr > R) continue;
         ////////////////// NEUTRALS /////////////////////////
         if (pfcand_charge->at(icand)==0){
             if (pfcand_pt->at(icand)>ptThresh) {
@@ -422,7 +420,7 @@ void GetIsoTracks(std::vector<std::pair<int,double> > &eCands,
         if (isnan(pfcand_charge->at(itk)) || isnan(pfcand_pt->at(itk))  || isnan(pfcand_dz->at(itk)) || isnan(pfcand_phi->at(itk)) || isnan(pfcand_eta->at(itk)) ) continue;
         if (!PassIsoTrackBaseline(itk)) continue;
         double pt = pfcand_pt->at(itk);
-        if (pt<5) continue;
+        if (pt<=5) continue;
         //  int type = static_cast<int>(pfcand_pdgId->at(itk));
 	//        double iso = GetPFCandIsolation(itk);
 	//        double relIso=iso/pfcand_pt->at(itk);

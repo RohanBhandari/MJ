@@ -45,28 +45,25 @@ while [ $COUNTER -lt $(($LASTFILENUM)) ]; do
     then 
         BEGINFILE=$COUNTER
         ENDFILE=$(($LASTFILENUM))
-        if [ ! -e /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
-#        if [ ! -e /net/cms26/cms26r0/jaehyeok/baby/Fatjet/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
+        if [ ! -e /net/cms26/cms26r0/rohan/Babies/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
         then
             echo -e "\033[5;34m JobSubmit.csh ./RunOneJob.sh  $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($LASTFILENUM)) $ISDATA $LUMI \033[0m"
-#            JobSubmit.csh ./RunOneJob.sh  $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($LASTFILENUM)) $ISDATA $LUMI
+            JobSubmit.csh ./RunOneJob.sh  $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($LASTFILENUM)) $ISDATA $LUMI
         fi 
     else  
         BEGINFILE=$COUNTER
         ENDFILE=$(($COUNTER+$NFILEPERJOB-1))
-        if [ ! -e /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
-#        if [ ! -e /net/cms26/cms26r0/jaehyeok/baby/Fatjet/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
+        if [ ! -e /net/cms26/cms26r0/rohan/Babies/baby_${RECOGNIZER}_f${BEGINFILE}To${ENDFILE}.root ] 
         then
             echo -e "\033[5;34m JobSubmit.csh ./RunOneJob.sh $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($COUNTER+$NFILEPERJOB-1)) $ISDATA $LUMI \033[0m" 
-#            JobSubmit.csh ./RunOneJob.sh $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($COUNTER+$NFILEPERJOB-1)) $ISDATA $LUMI 
+            JobSubmit.csh ./RunOneJob.sh $INPUTDIR/$DATASET/ $RECOGNIZER $COUNTER $(($COUNTER+$NFILEPERJOB-1)) $ISDATA $LUMI 
         fi
     fi
     let NUMOUTPUTFILES=NUMOUTPUTFILES+1
     let COUNTER=COUNTER+$NFILEPERJOB
 done
 
-NUMEXISTOUTPUTFILES=`ls /net/cms26/cms26r0/jaehyeok/baby/Fatjet/13TeV/baby_${RECOGNIZER}_f*To*.root | wc -l`
-#NUMEXISTOUTPUTFILES=`ls /net/cms26/cms26r0/jaehyeok/baby/Fatjet/baby_${RECOGNIZER}_f*To*.root | wc -l`
+NUMEXISTOUTPUTFILES=`ls /net/cms26/cms26r0/rohan/Babies/baby_${RECOGNIZER}_f*To*.root | wc -l`
 echo "Number of target output files : $NUMOUTPUTFILES"
 echo "Number of existing output files : $NUMEXISTOUTPUTFILES"
 

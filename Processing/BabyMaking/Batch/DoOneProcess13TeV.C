@@ -381,15 +381,33 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
     vector<float> RA4MusVetoPt_mi_;
     vector<float> RA4MusVetoEta_mi_;
     vector<float> RA4MusVetoPhi_mi_;
-    vector<float> IsoTrkVetoElsPt_;
-    vector<float> IsoTrkVetoElsEta_;
-    vector<float> IsoTrkVetoElsPhi_;
-    vector<float> IsoTrkVetoMusPt_;
-    vector<float> IsoTrkVetoMusEta_;
-    vector<float> IsoTrkVetoMusPhi_;
-    vector<float> IsoTrkVetoHadPt_;
-    vector<float> IsoTrkVetoHadEta_;
-    vector<float> IsoTrkVetoHadPhi_;
+    vector<float> IsoTrkVetoElsPt_R03_;
+    vector<float> IsoTrkVetoElsEta_R03_;
+    vector<float> IsoTrkVetoElsPhi_R03_;
+    vector<float> IsoTrkVetoMusPt_R03_;
+    vector<float> IsoTrkVetoMusEta_R03_;
+    vector<float> IsoTrkVetoMusPhi_R03_;
+    vector<float> IsoTrkVetoHadPt_R03_;
+    vector<float> IsoTrkVetoHadEta_R03_;
+    vector<float> IsoTrkVetoHadPhi_R03_;
+    vector<float> IsoTrkVetoElsPt_R02_;
+    vector<float> IsoTrkVetoElsEta_R02_;
+    vector<float> IsoTrkVetoElsPhi_R02_;
+    vector<float> IsoTrkVetoMusPt_R02_;
+    vector<float> IsoTrkVetoMusEta_R02_;
+    vector<float> IsoTrkVetoMusPhi_R02_;
+    vector<float> IsoTrkVetoHadPt_R02_;
+    vector<float> IsoTrkVetoHadEta_R02_;
+    vector<float> IsoTrkVetoHadPhi_R02_;
+    vector<float> IsoTrkVetoElsPt_mi_;
+    vector<float> IsoTrkVetoElsEta_mi_;
+    vector<float> IsoTrkVetoElsPhi_mi_;
+    vector<float> IsoTrkVetoMusPt_mi_;
+    vector<float> IsoTrkVetoMusEta_mi_;
+    vector<float> IsoTrkVetoMusPhi_mi_;
+    vector<float> IsoTrkVetoHadPt_mi_;
+    vector<float> IsoTrkVetoHadEta_mi_;
+    vector<float> IsoTrkVetoHadPhi_mi_;
     vector<float> JetE_mi_;
     vector<float> JetPt_mi_;
     vector<float> JetEta_mi_;
@@ -610,15 +628,33 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
     babyTree_->Branch("RA4MusVetoPt_mi",    &RA4MusVetoPt_mi_);
     babyTree_->Branch("RA4MusVetoEta_mi",   &RA4MusVetoEta_mi_);
     babyTree_->Branch("RA4MusVetoPhi_mi",   &RA4MusVetoPhi_mi_);
-    babyTree_->Branch("IsoTrkVetoElsPt",    &IsoTrkVetoElsPt_);
-    babyTree_->Branch("IsoTrkVetoElsEta",   &IsoTrkVetoElsEta_);
-    babyTree_->Branch("IsoTrkVetoElsPhi",   &IsoTrkVetoElsPhi_);
-    babyTree_->Branch("IsoTrkVetoMusPt",    &IsoTrkVetoMusPt_);
-    babyTree_->Branch("IsoTrkVetoMusEta",   &IsoTrkVetoMusEta_);
-    babyTree_->Branch("IsoTrkVetoMusPhi",   &IsoTrkVetoMusPhi_);
-    babyTree_->Branch("IsoTrkVetoHadPt",    &IsoTrkVetoHadPt_);
-    babyTree_->Branch("IsoTrkVetoHadEta",   &IsoTrkVetoHadEta_);
-    babyTree_->Branch("IsoTrkVetoHadPhi",   &IsoTrkVetoHadPhi_);
+    babyTree_->Branch("IsoTrkVetoElsPt_R03",    &IsoTrkVetoElsPt_R03_);
+    babyTree_->Branch("IsoTrkVetoElsEta_R03",   &IsoTrkVetoElsEta_R03_);
+    babyTree_->Branch("IsoTrkVetoElsPhi_R03",   &IsoTrkVetoElsPhi_R03_);
+    babyTree_->Branch("IsoTrkVetoMusPt_R03",    &IsoTrkVetoMusPt_R03_);
+    babyTree_->Branch("IsoTrkVetoMusEta_R03",   &IsoTrkVetoMusEta_R03_);
+    babyTree_->Branch("IsoTrkVetoMusPhi_R03",   &IsoTrkVetoMusPhi_R03_);
+    babyTree_->Branch("IsoTrkVetoHadPt_R03",    &IsoTrkVetoHadPt_R03_);
+    babyTree_->Branch("IsoTrkVetoHadEta_R03",   &IsoTrkVetoHadEta_R03_);
+    babyTree_->Branch("IsoTrkVetoHadPhi_R03",   &IsoTrkVetoHadPhi_R03_);
+    babyTree_->Branch("IsoTrkVetoElsPt_R02",    &IsoTrkVetoElsPt_R02_);
+    babyTree_->Branch("IsoTrkVetoElsEta_R02",   &IsoTrkVetoElsEta_R02_);
+    babyTree_->Branch("IsoTrkVetoElsPhi_R02",   &IsoTrkVetoElsPhi_R02_);
+    babyTree_->Branch("IsoTrkVetoMusPt_R02",    &IsoTrkVetoMusPt_R02_);
+    babyTree_->Branch("IsoTrkVetoMusEta_R02",   &IsoTrkVetoMusEta_R02_);
+    babyTree_->Branch("IsoTrkVetoMusPhi_R02",   &IsoTrkVetoMusPhi_R02_);
+    babyTree_->Branch("IsoTrkVetoHadPt_R02",    &IsoTrkVetoHadPt_R02_);
+    babyTree_->Branch("IsoTrkVetoHadEta_R02",   &IsoTrkVetoHadEta_R02_);
+    babyTree_->Branch("IsoTrkVetoHadPhi_R02",   &IsoTrkVetoHadPhi_R02_);
+    babyTree_->Branch("IsoTrkVetoElsPt_mi",    &IsoTrkVetoElsPt_mi_);
+    babyTree_->Branch("IsoTrkVetoElsEta_mi",   &IsoTrkVetoElsEta_mi_);
+    babyTree_->Branch("IsoTrkVetoElsPhi_mi",   &IsoTrkVetoElsPhi_mi_);
+    babyTree_->Branch("IsoTrkVetoMusPt_mi",    &IsoTrkVetoMusPt_mi_);
+    babyTree_->Branch("IsoTrkVetoMusEta_mi",   &IsoTrkVetoMusEta_mi_);
+    babyTree_->Branch("IsoTrkVetoMusPhi_mi",   &IsoTrkVetoMusPhi_mi_);
+    babyTree_->Branch("IsoTrkVetoHadPt_mi",    &IsoTrkVetoHadPt_mi_);
+    babyTree_->Branch("IsoTrkVetoHadEta_mi",   &IsoTrkVetoHadEta_mi_);
+    babyTree_->Branch("IsoTrkVetoHadPhi_mi",   &IsoTrkVetoHadPhi_mi_);
     babyTree_->Branch("JetE_mi",            &JetE_mi_);
     babyTree_->Branch("JetPt_mi",           &JetPt_mi_);
     babyTree_->Branch("JetEta_mi",          &JetEta_mi_);
@@ -895,15 +931,33 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         RA4MusVetoPt_mi_.clear();
         RA4MusVetoEta_mi_.clear();
         RA4MusVetoPhi_mi_.clear();
-        IsoTrkVetoElsPt_.clear();
-        IsoTrkVetoElsEta_.clear();
-        IsoTrkVetoElsPhi_.clear();
-        IsoTrkVetoMusPt_.clear();
-        IsoTrkVetoMusEta_.clear();
-        IsoTrkVetoMusPhi_.clear();
-        IsoTrkVetoHadPt_.clear();
-        IsoTrkVetoHadEta_.clear();
-        IsoTrkVetoHadPhi_.clear();
+        IsoTrkVetoElsPt_R03_.clear();
+        IsoTrkVetoElsEta_R03_.clear();
+        IsoTrkVetoElsPhi_R03_.clear();
+        IsoTrkVetoMusPt_R03_.clear();
+        IsoTrkVetoMusEta_R03_.clear();
+        IsoTrkVetoMusPhi_R03_.clear();
+        IsoTrkVetoHadPt_R03_.clear();
+        IsoTrkVetoHadEta_R03_.clear();
+        IsoTrkVetoHadPhi_R03_.clear();
+        IsoTrkVetoElsPt_R02_.clear();
+        IsoTrkVetoElsEta_R02_.clear();
+        IsoTrkVetoElsPhi_R02_.clear();
+        IsoTrkVetoMusPt_R02_.clear();
+        IsoTrkVetoMusEta_R02_.clear();
+        IsoTrkVetoMusPhi_R02_.clear();
+        IsoTrkVetoHadPt_R02_.clear();
+        IsoTrkVetoHadEta_R02_.clear();
+        IsoTrkVetoHadPhi_R02_.clear();
+        IsoTrkVetoElsPt_mi_.clear();
+        IsoTrkVetoElsEta_mi_.clear();
+        IsoTrkVetoElsPhi_mi_.clear();
+        IsoTrkVetoMusPt_mi_.clear();
+        IsoTrkVetoMusEta_mi_.clear();
+        IsoTrkVetoMusPhi_mi_.clear();
+        IsoTrkVetoHadPt_mi_.clear();
+        IsoTrkVetoHadEta_mi_.clear();
+        IsoTrkVetoHadPhi_mi_.clear();
         JetE_mi_.clear();
         JetPt_mi_.clear();
         JetEta_mi_.clear();
@@ -1019,10 +1073,19 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         }
 
         // Iso track veto 
-        std::vector<std::pair<int,double> > eCands;
-        std::vector<std::pair<int,double> > muCands;
-        std::vector<std::pair<int,double> > hadCands;
-        GetIsoTracks(eCands,muCands,hadCands);
+        std::vector<std::pair<int,double> > eCands_R03;
+        std::vector<std::pair<int,double> > muCands_R03;
+        std::vector<std::pair<int,double> > hadCands_R03;
+        std::vector<std::pair<int,double> > eCands_R02;
+        std::vector<std::pair<int,double> > muCands_R02;
+        std::vector<std::pair<int,double> > hadCands_R02;
+        std::vector<std::pair<int,double> > eCands_mi;
+        std::vector<std::pair<int,double> > muCands_mi;
+        std::vector<std::pair<int,double> > hadCands_mi;
+
+        GetIsoTracks(eCands_R03,muCands_R03,hadCands_R03,0.3,false);
+	GetIsoTracks(eCands_R02,muCands_R02,hadCands_R02,0.2,false);
+	GetIsoTracks(eCands_mi,muCands_mi,hadCands_mi,0.2,true);	
 
         // Skim : HT>500 MET>250
         //if( HT<500 && HT_mini<500) continue;
@@ -1363,10 +1426,8 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
         }
         // Fat jets on-the-fly ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
 
-
         // FIXME 
         //cout << NIsoTkVeto() << endl; // need to find correct branch names in cfa 
-
 
         //
         // Fill the baby variables 
@@ -1472,31 +1533,78 @@ void DoOneProcess13TeV(TString InputName, TString ProcessName, int ibegin, int i
             RA4ElsVetoEta_mi_.push_back(els_eta->at(RA4ElecVeto_mini.at(iels)));
             RA4ElsVetoPhi_mi_.push_back(els_phi->at(RA4ElecVeto_mini.at(iels)));
         }
-        for(unsigned int iisotrkels=0; iisotrkels<eCands.size(); iisotrkels++) 
+        for(unsigned int iisotrkels=0; iisotrkels<eCands_R03.size(); iisotrkels++) 
         {
-            if(eCands.at(iisotrkels).second>=0.2) continue;
-            unsigned int ipfcand = eCands.at(iisotrkels).first;
-            IsoTrkVetoElsPt_.push_back(pfcand_pt->at(ipfcand));
-            IsoTrkVetoElsEta_.push_back(pfcand_eta->at(ipfcand));
-            IsoTrkVetoElsPhi_.push_back(pfcand_phi->at(ipfcand));
+            if(eCands_R03.at(iisotrkels).second>=0.2) continue;
+            unsigned int ipfcand = eCands_R03.at(iisotrkels).first;
+            IsoTrkVetoElsPt_R03_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoElsEta_R03_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoElsPhi_R03_.push_back(pfcand_phi->at(ipfcand));
         }
-        for(unsigned int iisotrkmus=0; iisotrkmus<muCands.size(); iisotrkmus++) 
+        for(unsigned int iisotrkmus=0; iisotrkmus<muCands_R03.size(); iisotrkmus++) 
         {
-            if(muCands.at(iisotrkmus).second>=0.2) continue;
-            unsigned int ipfcand = muCands.at(iisotrkmus).first;
-            IsoTrkVetoMusPt_.push_back(pfcand_pt->at(ipfcand));
-            IsoTrkVetoMusEta_.push_back(pfcand_eta->at(ipfcand));
-            IsoTrkVetoMusPhi_.push_back(pfcand_phi->at(ipfcand));
+            if(muCands_R03.at(iisotrkmus).second>=0.2) continue;
+            unsigned int ipfcand = muCands_R03.at(iisotrkmus).first;
+            IsoTrkVetoMusPt_R03_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoMusEta_R03_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoMusPhi_R03_.push_back(pfcand_phi->at(ipfcand));
         }
-        for(unsigned int iisotrkhad=0; iisotrkhad<hadCands.size(); iisotrkhad++) 
+        for(unsigned int iisotrkhad=0; iisotrkhad<hadCands_R03.size(); iisotrkhad++) 
         {
-            if(hadCands.at(iisotrkhad).second>=0.1) continue;
-            unsigned int ipfcand = hadCands.at(iisotrkhad).first;
-            IsoTrkVetoHadPt_.push_back(pfcand_pt->at(ipfcand));
-            IsoTrkVetoHadEta_.push_back(pfcand_eta->at(ipfcand));
-            IsoTrkVetoHadPhi_.push_back(pfcand_phi->at(ipfcand));
+            if(hadCands_R03.at(iisotrkhad).second>=0.1) continue;
+            unsigned int ipfcand = hadCands_R03.at(iisotrkhad).first;
+            IsoTrkVetoHadPt_R03_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoHadEta_R03_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoHadPhi_R03_.push_back(pfcand_phi->at(ipfcand));
         }
-
+        for(unsigned int iisotrkels=0; iisotrkels<eCands_R02.size(); iisotrkels++) 
+        {
+            if(eCands_R02.at(iisotrkels).second>=0.2) continue;
+            unsigned int ipfcand = eCands_R02.at(iisotrkels).first;
+            IsoTrkVetoElsPt_R02_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoElsEta_R02_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoElsPhi_R02_.push_back(pfcand_phi->at(ipfcand));
+        }
+        for(unsigned int iisotrkmus=0; iisotrkmus<muCands_R02.size(); iisotrkmus++) 
+        {
+            if(muCands_R02.at(iisotrkmus).second>=0.2) continue;
+            unsigned int ipfcand = muCands_R02.at(iisotrkmus).first;
+            IsoTrkVetoMusPt_R02_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoMusEta_R02_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoMusPhi_R02_.push_back(pfcand_phi->at(ipfcand));
+        }
+        for(unsigned int iisotrkhad=0; iisotrkhad<hadCands_R02.size(); iisotrkhad++) 
+        {
+            if(hadCands_R02.at(iisotrkhad).second>=0.1) continue;
+            unsigned int ipfcand = hadCands_R02.at(iisotrkhad).first;
+            IsoTrkVetoHadPt_R02_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoHadEta_R02_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoHadPhi_R02_.push_back(pfcand_phi->at(ipfcand));
+        }
+        for(unsigned int iisotrkels=0; iisotrkels<eCands_mi.size(); iisotrkels++) 
+        {
+            if(eCands_mi.at(iisotrkels).second>=0.2) continue;
+            unsigned int ipfcand = eCands_mi.at(iisotrkels).first;
+            IsoTrkVetoElsPt_mi_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoElsEta_mi_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoElsPhi_mi_.push_back(pfcand_phi->at(ipfcand));
+        }
+        for(unsigned int iisotrkmus=0; iisotrkmus<muCands_mi.size(); iisotrkmus++) 
+        {
+            if(muCands_mi.at(iisotrkmus).second>=0.2) continue;
+            unsigned int ipfcand = muCands_mi.at(iisotrkmus).first;
+            IsoTrkVetoMusPt_mi_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoMusEta_mi_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoMusPhi_mi_.push_back(pfcand_phi->at(ipfcand));
+        }
+        for(unsigned int iisotrkhad=0; iisotrkhad<hadCands_mi.size(); iisotrkhad++) 
+        {
+            if(hadCands_mi.at(iisotrkhad).second>=0.1) continue;
+            unsigned int ipfcand = hadCands_mi.at(iisotrkhad).first;
+            IsoTrkVetoHadPt_mi_.push_back(pfcand_pt->at(ipfcand));
+            IsoTrkVetoHadEta_mi_.push_back(pfcand_eta->at(ipfcand));
+            IsoTrkVetoHadPhi_mi_.push_back(pfcand_phi->at(ipfcand));
+        }
         for(int igoodjet=0; igoodjet<(int)GoodJets_AK4_mini.size(); igoodjet++) 
         {
           int ijet = GoodJets_AK4_mini.at(igoodjet); 

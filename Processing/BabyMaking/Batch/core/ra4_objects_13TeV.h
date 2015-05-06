@@ -410,7 +410,8 @@ double GetPFCandIsolation(const uint indexA)
 
 void GetIsoTracks(std::vector<std::pair<int,double> > &eCands, 
                   std::vector<std::pair<int,double> > &muCands, 
-                  std::vector<std::pair<int,double> > &hadCands) 
+                  std::vector<std::pair<int,double> > &hadCands,
+		  double rmax, bool doMini) 
 {
     eCands.clear();
     muCands.clear();
@@ -424,7 +425,7 @@ void GetIsoTracks(std::vector<std::pair<int,double> > &eCands,
         //  int type = static_cast<int>(pfcand_pdgId->at(itk));
 	//        double iso = GetPFCandIsolation(itk);
 	//        double relIso=iso/pfcand_pt->at(itk);
-	double relIso = GetIsolation(itk, 0, 0.3, false, true, false, false, false);
+	double relIso = GetIsolation(itk, 0, rmax, doMini, true, false, false, false);
         // note: not cutting here on isolation!
         switch (abs(TMath::Nint(pfcand_pdgId->at(itk)))) {
             case 11:

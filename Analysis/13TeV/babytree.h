@@ -58,6 +58,16 @@
     float        top1Phi_;
     float        top2pT_;
     float        top2Phi_;
+
+    //Decalring things for Manuel's' code
+int nels_;
+int nmus_;
+int nvels_;
+int nvmus_;
+int mt_;
+unsigned int mc_type_;
+vector<bool> *JetIsLep_;
+//                        //
     
     TBranch         *b_event;   //!
     TBranch         *b_EventWeight;   //!
@@ -161,11 +171,14 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("EventWeightNeg",  &EventWeightNeg_,   &b_EventWeightNeg);
     ch->SetBranchAddress("Npu",             &Npu_,           &b_Npu);
     ch->SetBranchAddress("Npv",             &Npv_,           &b_Npv);
-    ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
+    //    ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
     ch->SetBranchAddress("Nskinnyjet_mini", &Nskinnyjet_,    &b_Nskinnyjet);
+    //ch->SetBranchAddress("Nskinnyjet", &Nskinnyjet_,    &b_Nskinnyjet);
     ch->SetBranchAddress("NBtagCSVM_mini",  &NBtagCSVM_,     &b_NBtagCSVM);
+    ch->SetBranchAddress("NBtagCSVM",  &NBtagCSVM_,     &b_NBtagCSVM);
     ch->SetBranchAddress("MJ_pT30",         &MJ_,            &b_MJ);
     ch->SetBranchAddress("MET",             &MET_,           &b_MET);
+    //ch->SetBranchAddress("HT",         &HT_,            &b_HT);
     ch->SetBranchAddress("HT_mini",         &HT_,            &b_HT);
     ch->SetBranchAddress("METPhi",          &METPhi_,        &b_METPhi);
     ch->SetBranchAddress("mj_pT30",         &mj_,            &b_mj);
@@ -219,15 +232,15 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("GenMId",          &GenMId_,        &b_GenMId);
     ch->SetBranchAddress("GenGMId",         &GenGMId_,       &b_GenGMId);
 
-    ch->SetBranchAddress("IsoTrkVetoElsPt",         &IsoTrkVetoElsPt_,       &b_IsoTrkVetoElsPt);
-    ch->SetBranchAddress("IsoTrkVetoElsEta",        &IsoTrkVetoElsEta_,      &b_IsoTrkVetoElsEta);
-    ch->SetBranchAddress("IsoTrkVetoElsPhi",        &IsoTrkVetoElsPhi_,      &b_IsoTrkVetoElsPhi);
-    ch->SetBranchAddress("IsoTrkVetoMusPt",         &IsoTrkVetoMusPt_,       &b_IsoTrkVetoMusPt);
-    ch->SetBranchAddress("IsoTrkVetoMusEta",        &IsoTrkVetoMusEta_,      &b_IsoTrkVetoMusEta);
-    ch->SetBranchAddress("IsoTrkVetoMusPhi",        &IsoTrkVetoMusPhi_,      &b_IsoTrkVetoMusPhi);
-    ch->SetBranchAddress("IsoTrkVetoHadPt",         &IsoTrkVetoHadPt_,       &b_IsoTrkVetoHadPt);
-    ch->SetBranchAddress("IsoTrkVetoHadEta",        &IsoTrkVetoHadEta_,      &b_IsoTrkVetoHadEta);
-    ch->SetBranchAddress("IsoTrkVetoHadPhi",        &IsoTrkVetoHadPhi_,      &b_IsoTrkVetoHadPhi);
+    ch->SetBranchAddress("IsoTrkVetoElsPt_mi",         &IsoTrkVetoElsPt_,       &b_IsoTrkVetoElsPt);
+    ch->SetBranchAddress("IsoTrkVetoElsEta_mi",        &IsoTrkVetoElsEta_,      &b_IsoTrkVetoElsEta);
+    ch->SetBranchAddress("IsoTrkVetoElsPhi_mi",        &IsoTrkVetoElsPhi_,      &b_IsoTrkVetoElsPhi);
+    ch->SetBranchAddress("IsoTrkVetoMusPt_mi",         &IsoTrkVetoMusPt_,       &b_IsoTrkVetoMusPt);
+    ch->SetBranchAddress("IsoTrkVetoMusEta_mi",        &IsoTrkVetoMusEta_,      &b_IsoTrkVetoMusEta);
+    ch->SetBranchAddress("IsoTrkVetoMusPhi_mi",        &IsoTrkVetoMusPhi_,      &b_IsoTrkVetoMusPhi);
+    ch->SetBranchAddress("IsoTrkVetoHadPt_mi",         &IsoTrkVetoHadPt_,       &b_IsoTrkVetoHadPt);
+    ch->SetBranchAddress("IsoTrkVetoHadEta_mi",        &IsoTrkVetoHadEta_,      &b_IsoTrkVetoHadEta);
+    ch->SetBranchAddress("IsoTrkVetoHadPhi_mi",        &IsoTrkVetoHadPhi_,      &b_IsoTrkVetoHadPhi);
 
     //ch->SetBranchAddress("top1pT",        &top1pT_, &b_top1pT);
     //ch->SetBranchAddress("top1Phi",       &top1Phi_, &b_top1Phi);

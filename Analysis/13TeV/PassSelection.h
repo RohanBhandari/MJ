@@ -1,21 +1,31 @@
 // 
+bool manuel2 = false;
+//bool manuel2 = true;
+
 bool PassNLep(unsigned int Nlep)
 {
+  if(!manuel2){
     if( (RA4MusPt_->size()+RA4ElsPt_->size())==Nlep 
         && RA4MusVetoPt_->size()==0 
         && RA4ElsVetoPt_->size()==0 
-      ) return true;
+	) return true;
     else return false;
-       
+  }
+  else{
+    if(nmus_+nels_==static_cast<int>(Nlep)) 
+      return true;
+    else return false;	
+  }
 }
 
 // 
 bool PassBaselineSelection(float HT, float MET, int Ncsvm, int Nskinny, int nGoodIsoTrks=0)
 {
   //  return  (HT>750 && MET>250 && Ncsvm>1 && Nskinny>5); 
+
   // Veto events with 1 or more isolated tracks (since now cleaned). Though right now we are interested in the 1 lep + iso trk case so we veto on 2+.
   //  return  (HT>750 && MET>250 && Nskinny>5 && nGoodIsoTrks<2); //For yields book. No Nbtag cut
-  return  (HT>750 && MET>250 && Nskinny>5); //For yields book. No Nbtag cut
+  return  (HT>500 && MET>200 && Nskinny>5); //For yields book. No Nbtag cut
 }
  
 //
@@ -38,13 +48,23 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
     
     // Nlep = 1/2 for 1/2 leptons + 0 veto + 0 isotrk. Nlep = 3/4 for 1 lepton + 1 veto lepton/iso trk
 
-    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0) 
+    if(!manuel2){
+      if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0) 
       //    if((RA4MusPt_->size()+RA4ElsPt_->size())<=2 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==0) 
       Nlep = RA4MusPt_->size()+RA4ElsPt_->size();
     //    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==1 && (nGoodIsoTrks)==0)
     //      Nlep = 3;
     //    else if((RA4MusPt_->size()+RA4ElsPt_->size())==1 && (RA4MusVetoPt_->size() + RA4ElsVetoPt_->size())==0 && (nGoodIsoTrks)==1)
     //      Nlep = 4;
+    } else {
+      if((nmus_+nels_)<=2 && ((nvmus_-nmus_) + (nvels_-nels_))==0) 
+	//    if((nmus_+nels_)<=2 && ((nvmus_-nmus_) + (nvels_-nels_))==0 && (nGoodIsoTrks)==0) 
+	Nlep = nmus_+nels_;
+      //    else if((nmus_+nels_)==1 && ((nvmus_-nmus_) + (nvels_-nels_))==1 && (nGoodIsoTrks)==0)
+      //      Nlep = 3;
+      //    else if((nmus_+nels_)==1 && ((nvmus_-nmus_) + (nvels_-nels_))==0 && (nGoodIsoTrks)==1)
+      //      Nlep = 4;
+    }
 
 
     int MJMax = -1;
@@ -137,337 +157,51 @@ bool PassSelection(TString Region, float HT, float MET, int Nb, int Njet, float 
     }
     //
     //
-
     
-    // Standard Signal Region selection
-    if(Region=="SR0" 
+    if(Region=="R1" 
         && HT   > -1 
-        && MET  > 400
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 600 
-    )  passed = true;
-    
-    // SR with reduced MJ cut
-    if(Region=="SR0p1" 
-        && HT   > -1 
-        && MET  > 400
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 500 
-    )  passed = true;
-    
-    // SR with reduced MJ cut
-    if(Region=="SR0p2" 
-        && HT   > -1 
-        && MET  > 400
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 400 
-    )  passed = true;
-    
-    // mT cut is reversed
-    if(Region=="SR1" 
-        && HT   > -1 
-        && MET  > -1 
+        && MET  > -1
         && Nb   > -1 
         && Njet > -1 
         && mT   < 150 
-        && MJ   > -1 
+        && MJ   < 600 
     )  passed = true;
-    
-    // only mT cut
-    if(Region=="SR2" 
+
+    if(Region=="R2" 
         && HT   > -1 
-        && MET  > -1 
+        && MET  > -1
         && Nb   > -1 
         && Njet > -1 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // only MJ400 cut
-    if(Region=="SR2p1" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > -1 
-        && MJ   > 400 
-    )  passed = true;
-    
-    // only reduced mT cut
-    if(Region=="SR2p2" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 100 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // only increased mT cut
-    if(Region=="SR2p3" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 200 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // only Njet 8+ cut
-    if(Region=="SR3" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 7 
-        && mT   > -1 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // only Njet 9+ cut
-    if(Region=="SR4" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 8 
-        && mT   > -1 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // low MET region
-    if(Region=="SR5" 
-        && HT   > -1 
-        && MET  > -1 && MET < 350 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > -1 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // medium MET region
-    if(Region=="SR6" 
-        && HT   > -1 
-        && MET  > 350 && MET < 450 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > -1 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // high MET region
-    if(Region=="SR7" 
-        && HT   > -1 
-        && MET  > 450 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > -1 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // Njet 7+ and mT cut
-    if(Region=="SR8" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 6 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // Njet 8+ and mT cut
-    if(Region=="SR9" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 7 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // Njet 9+ and mT cut
-    if(Region=="SR10" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 8 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // mT and MJ cut
-    if(Region=="SR11" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 600 
-    )  passed = true;
-    
-    // mT and reduced MJ cut
-    if(Region=="SR12" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 500 
-    )  passed = true;
-    
-    // mT and reduced MJ cut
-    if(Region=="SR13" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
-        && MJ   > 400 
-    )  passed = true;
-    
-    // mT, MJ, and Njet 6+ cut
-    if(Region=="SR14" 
-        && HT   > -1 
-        && MET  > -1 
-        && Nb   > -1 
-        && Njet > 5 
-        && mT   > 150 
-        && MJ   > 600 
-    )  passed = true;
-    
-    // Redundant signal region (SR0)
-    if(Region=="SR15" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > -1 
-        && Njet > -1 
-        && mT   > 150 
+        && mT   < 150 
         && MJ   > 600 
     )  passed = true;
 
-    // MET, Njet 4+, and mT
-    if(Region=="SR16" 
+    if(Region=="R3" 
         && HT   > -1 
-        && MET  > 400 
-        && Nb   > -1 
-        && Njet > 3 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 5+, and mT
-    if(Region=="SR17" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > -1 
-        && Njet > 4 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-
-    // MET, Njet 4+, mT, and Nb 2+
-    if(Region=="SR18" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > 1 
-        && Njet > 3 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 5+, mT, and Nb 2+
-    if(Region=="SR19" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > 1 
-        && Njet > 4 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 6+, mT, and Nb 2+
-    if(Region=="SR20" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > 1 
-        && Njet > 5 
-        && mT   > 150 
-        && MJ   > 400 
-    )  passed = true;
-
-    // MET, Njet 5+, mT, Nb 2+, and MJ    
-    if(Region=="SR20p1" 
-        && HT   > -1 
-        && MET  > 400 
-        && Nb   > 1 
-        && Njet > 5 
-        && mT   > 150 
-        && MJ   > 500 
-    )  passed = true;
-    
-    // MET, Njet 6+, and mT 
-    if(Region=="SR21" 
-        && HT   > -1 
-        && MET  > 350 
-        && Nb   > -1 
-        && Njet > 5 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 7+, mT
-    if(Region=="SR22" 
-        && HT   > -1 
-        && MET  > 350 
-        && Nb   > -1 
-        && Njet > 6 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 8+, mT
-    if(Region=="SR23" 
-        && HT   > -1 
-        && MET  > 350 
-        && Nb   > -1 
-        && Njet > 7 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // MET, Njet 9+, mT
-    if(Region=="SR24" 
-        && HT   > -1 
-        && MET  > 350 
-        && Nb   > -1 
-        && Njet > 8 
-        && mT   > 150 
-        && MJ   > -1 
-    )  passed = true;
-    
-    // mT and low MJ region
-    if(Region=="SR25" 
-        && HT   > -1 
-        && MET  > -1 
+        && MET  > -1
         && Nb   > -1 
         && Njet > -1 
         && mT   > 150 
-        && MJ   > 300 
+        && MJ   < 600 
     )  passed = true;
 
-    // mT and low MJ region
-    if(Region=="SR26" 
-        && HT   > 500 
-        && MET  > 200
+    if(Region=="R4" 
+        && HT   > -1 
+        && MET  > -1
         && Nb   > -1 
-        && Njet > 3 
-        && mT   > -1 
-        && MJ   > -1 
+        && Njet > -1 
+        && mT   > 150 
+        && MJ   > 600
     )  passed = true;
-    
+
+    if(Region=="test" 
+        && HT   > -1 
+        && MET  > -1
+        && Nb   > -1 
+        && Njet > -1 
+        && mT   > -1
+        && MJ   > -1
+    )  passed = true;
+        
    return passed;
 }

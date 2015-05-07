@@ -6,7 +6,7 @@ void DoAnalysis(bool OnlyDraw=false)
     // Style
   //    gROOT->ProcessLine(".L rootlogon.C");
     // Load macros 
-    gROOT->LoadMacro("MakeHists.C+");
+    gROOT->LoadMacro("MakeHists.C++");
     gROOT->LoadMacro("Make1DPlots.C+");
     gROOT->LoadMacro("Make2DPlots.C+");
     gROOT->LoadMacro("MakeTables.C+");
@@ -25,7 +25,10 @@ void DoAnalysis(bool OnlyDraw=false)
     TChain *ch_f1500_100    = new TChain("tree", "T1tttt_f1500_100");
     TChain *ch_f1200_800    = new TChain("tree", "T1tttt_f1200_800");
     
-    TString BabyDir = "Phys14/";
+    //    TString BabyDir = "Phys14/";
+    TString BabyDir = "~/cms26/Babies/Phys14_05May2015/HT500MET200/";
+
+    //    TString BabyDir = "/net/cms5/cms5r0/ald77/archive/20150428/skim/"; //Rich tuples
 
     TString babyName = "Test";
 
@@ -61,9 +64,9 @@ void DoAnalysis(bool OnlyDraw=false)
     //TString Region[] = {"Baseline"}; 
     //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L","R3.2b.1M.1J.1L", "R3.2b.1M.2J.1L","R3.2b.2M.1J.1L", "R3.2b.2M.2J.1L"}; 
     //TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.2J.1L","R3.1b.2M.1J.1L", "R3.1b.2M.2J.1L"}; 
-    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.1J.2L","R3.1b.1M.1J.3L", "R3.1b.1M.1J.4L"}; 
+    //    TString Region[] = {"R3.1b.1M.1J.1L", "R3.1b.1M.1J.2L","R3.1b.1M.1J.3L", "R3.1b.1M.1J.4L"}; 
     //    TString Region[] = {"R1", "R2", "R3", "R4"};     
-    //    TString Region[] = {"R4.1b.1M.1J.1L"}; 
+    TString Region[] = {"test"}; 
 
     int NRegion = sizeof(Region)/sizeof(Region[0]);
     
@@ -102,23 +105,22 @@ void DoAnalysis(bool OnlyDraw=false)
     */
 
     // Data
-    //ch_data->Add(BabyDir+"baby_MuHad_*.root");                            
-    
+    ch_data->Add(BabyDir+"baby_MuHad_*.root");                                
+    ch_data->Add(BabyDir+"");
     // TT 
-    ch_ttbar_sl->Add(BabyDir+"baby_TTJets*.root");
-    ch_ttbar_ll->Add(BabyDir+"baby_TTJets*.root");
+    ch_ttbar_sl->Add(BabyDir+"*_TTJets*.root");
+    ch_ttbar_ll->Add(BabyDir+"*_TTJets*.root");
     // WJets 
-    ch_wjets->Add(BabyDir+"baby_WJetsToLNu*.root");
+    ch_wjets->Add(BabyDir+"*_WJetsToLNu*.root");    
     // DY 
-    ch_dy->Add(BabyDir+"baby_DYJetsToLL*.root");
+    ch_dy->Add(BabyDir+"*_DYJetsToLL*.root");
     // Single top 
-    ch_t->Add(BabyDir+"baby_*channel*_f*.root");
-
+    ch_t->Add(BabyDir+"*_*channel*_f*.root");
     // Signal
-    ch_f1500_100->Add(BabyDir+"baby_*1500*.root");
-    ch_f1200_800->Add(BabyDir+"baby_*1200*.root");
+    ch_f1500_100->Add(BabyDir+"*_*mGl-1500_mLSP-100*.root");
+    ch_f1200_800->Add(BabyDir+"*_*mGl-1200_mLSP-800*.root");
     
-    
+
     // ----------------------------------------
     //  Get number of entries 
     // ----------------------------------------

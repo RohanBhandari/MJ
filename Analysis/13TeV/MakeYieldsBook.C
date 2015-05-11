@@ -25,11 +25,11 @@ const int Nregions = 4  +1;
 const int Nbcuts = 3    +1;
 const int Njetcuts = 2  +1;
 const int Nmetcuts = 2  +1;
-const int Nlepcuts = 4  +1;
+const int Nlepcuts = 2  +1;
 const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)  +1;
 
-const char* sigType = "T1tttt[1500,100]";
-//const char* sigType = "T1tttt[1200,800]";
+//const char* sigType = "T1tttt[1500,100]";   //Uncompressed
+const char* sigType = "T1tttt[1200,800]";   //Compressed
 
 // Indices are 1 too large so that they match region/cut number (i.e. arrays start at 1)
 double total_Bkg[Nregions][Nbcuts][Nlepcuts][Nmetjetcuts];
@@ -44,8 +44,12 @@ void PrintRegionBlock(int bCut, int nLep){
   for(int i=1; i<Nregions; i++){
     for(int l=1; l<Nmetjetcuts; l++){
       Bkg_RegTot[i] += total_Bkg[i][bCut][nLep][l];
+      //Uncompressed
       Sig_RegTot[i] += total_f1500_100[i][bCut][nLep][l];
       sigContam[i][l] = (total_f1500_100[i][bCut][nLep][l]*100.0)/(total_Bkg[i][bCut][nLep][l] + total_f1500_100[i][bCut][nLep][l]);
+      //Compressed
+      //      Sig_RegTot[i] += total_f1200_800[i][bCut][nLep][l];
+      //      sigContam[i][l] = (total_f1200_800[i][bCut][nLep][l]*100.0)/(total_Bkg[i][bCut][nLep][l] + total_f1200_800[i][bCut][nLep][l]);
     }
     /*    //DEBUG
 	  if(i==2){
@@ -68,7 +72,10 @@ void PrintRegionBlock(int bCut, int nLep){
     for(int j=1; j<Nmetcuts; j++){
       for(int l= (1 + (j-1)*(Njetcuts-1)); l<=(j*(Njetcuts-1)); l++){      
 	totBkg_METbins[i][j] += total_Bkg[i][bCut][nLep][l];
+	//Unompressed
 	totSig_METbins[i][j] += total_f1500_100[i][bCut][nLep][l];
+	//Compressed
+	//	totSig_METbins[i][j] += total_f1200_800[i][bCut][nLep][l];
       }
       totContam_METbins[i][j] = (totSig_METbins[i][j]*100.0)/(totBkg_METbins[i][j]+totSig_METbins[i][j]);
     }
@@ -88,27 +95,29 @@ void PrintRegionBlock(int bCut, int nLep){
     
     char* cutName = "";
     if(Nmetjetcuts == 4+1){
-      if(l==1) cutName = "Low MET, Low Njet";
-      if(l==2) cutName = "Low MET, High Njet";
-      if(l==3) cutName = "High MET, Low Njet";
-      if(l==4) cutName = "High MET, High Njet";
+      if(l==1) cutName = "Low MET, Low Nobj";
+      if(l==2) cutName = "Low MET, High Nobj";
+      if(l==3) cutName = "High MET, Low Nobj";
+      if(l==4) cutName = "High MET, High Nobj";
     }
     if(Nmetjetcuts == 6+1){
-      if(l==1) cutName = "Low MET, Low Njet";
-      if(l==2) cutName = "Low MET, Med Njet";
-      if(l==3) cutName = "Low MET, High Njet";
-      if(l==4) cutName = "High MET, Low Njet";
-      if(l==5) cutName = "High MET, Med Njet";
-      if(l==6) cutName = "High MET, High Njet";
+      if(l==1) cutName = "Low MET, Low Nobj";
+      if(l==2) cutName = "Low MET, Med Nobj";
+      if(l==3) cutName = "Low MET, High Nobj";
+      if(l==4) cutName = "High MET, Low Nobj";
+      if(l==5) cutName = "High MET, Med Nobj";
+      if(l==6) cutName = "High MET, High Nobj";
     }
     
     fout << cutName << " & "
 	 << Form("%.1f",total_Bkg[3][bCut][nLep][l]) << " & "
-	 << Form("%.1f",total_f1500_100[3][bCut][nLep][l]) << " & "
+	 << Form("%.1f",total_f1500_100[3][bCut][nLep][l]) << " & "   //Uncompressed
+      //	 << Form("%.1f",total_f1200_800[3][bCut][nLep][l]) << " & "   //Compressed
 	 << Form("%.1f",sigContam[3][l])
 	 << " && & "
 	 << Form("%.1f",total_Bkg[4][bCut][nLep][l]) << " & "
-	 << Form("%.1f",total_f1500_100[4][bCut][nLep][l]) << " & "
+      	 << Form("%.1f",total_f1500_100[4][bCut][nLep][l]) << " & "   //Uncompressed
+      //<< Form("%.1f",total_f1200_800[4][bCut][nLep][l]) << " & "   //Compressed
 	 << Form("%.1f",sigContam[4][l])
  	 <<" \\\\"<<endl;
     
@@ -150,27 +159,29 @@ void PrintRegionBlock(int bCut, int nLep){
     
     char* cutName = "";
     if(Nmetjetcuts == 4+1){
-      if(l==1) cutName = "Low MET, Low Njet";
-      if(l==2) cutName = "Low MET, High Njet";
-      if(l==3) cutName = "High MET, Low Njet";
-      if(l==4) cutName = "High MET, High Njet";
+      if(l==1) cutName = "Low MET, Low Nobj";
+      if(l==2) cutName = "Low MET, High Nobj";
+      if(l==3) cutName = "High MET, Low Nobj";
+      if(l==4) cutName = "High MET, High Nobj";
     }
     if(Nmetjetcuts == 6+1){
-      if(l==1) cutName = "Low MET, Low Njet";
-      if(l==2) cutName = "Low MET, Med Njet";
-      if(l==3) cutName = "Low MET, High Njet";
-      if(l==4) cutName = "High MET, Low Njet";
-      if(l==5) cutName = "High MET, Med Njet";
-      if(l==6) cutName = "High MET, High Njet";
+      if(l==1) cutName = "Low MET, Low Nobj";
+      if(l==2) cutName = "Low MET, Med Nobj";
+      if(l==3) cutName = "Low MET, High Nobj";
+      if(l==4) cutName = "High MET, Low Nobj";
+      if(l==5) cutName = "High MET, Med Nobj";
+      if(l==6) cutName = "High MET, High Nobj";
     }
     
     fout << cutName << " & "
 	 << Form("%.1f",total_Bkg[1][bCut][nLep][l]) << " & "
-	 << Form("%.1f",total_f1500_100[1][bCut][nLep][l]) << " & "
+      	 << Form("%.1f",total_f1500_100[1][bCut][nLep][l]) << " & "   //Uncompressed
+      //	 << Form("%.1f",total_f1200_800[1][bCut][nLep][l]) << " & "   //Compressed
 	 << Form("%.1f",sigContam[1][l])
 	 << " && & "
 	 << Form("%.1f",total_Bkg[2][bCut][nLep][l]) << " & "
-	 << Form("%.1f",total_f1500_100[2][bCut][nLep][l]) << " & "
+      	 << Form("%.1f",total_f1500_100[2][bCut][nLep][l]) << " & "   //Uncompressed
+      //	 << Form("%.1f",total_f1200_800[2][bCut][nLep][l]) << " & "   //Compressed
 	 << Form("%.1f",sigContam[2][l])
 	 <<" \\\\"<<endl;
 
@@ -302,8 +313,8 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
       fout<<"\\begin{tabular}{| c | c c | c || c || c | c c | c |}"<<endl;
       if(i==1 && j==1) fout<<Form("\\multicolumn{9}{c}{\\textbf{%i Lepton}} \\\\",j)<<endl;
       if(i==1 && j==2) fout<<Form("\\multicolumn{9}{c}{\\textbf{%i Leptons}} \\\\",j)<<endl;
-      if(i==1 && j==3) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 1 Veto Lepton}} \\\\",j)<<endl;
-      if(i==1 && j==4) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 1 Iso Trk}} \\\\",j)<<endl;
+      if(i==1 && j==3) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 0 Veto Leptons}} \\\\",j)<<endl;
+      if(i==1 && j==4) fout<<Form("\\multicolumn{9}{c}{\\textbf{1 Lepton + 1 Veto Lepton}} \\\\",j)<<endl;
       fout<<"\\hline \\hline"<<endl;
       if(i!=Nbcuts-1) fout<<Form("\\textbf{Nb=%i}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;
       if(i==Nbcuts-1) fout<<Form("\\textbf{Nb=%i+}",i)<<"  & BKG & SIG & \\% SIG &&& BKG & SIG & \\% SIG \\\\"<<endl;

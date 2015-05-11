@@ -171,14 +171,11 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("EventWeightNeg",  &EventWeightNeg_,   &b_EventWeightNeg);
     ch->SetBranchAddress("Npu",             &Npu_,           &b_Npu);
     ch->SetBranchAddress("Npv",             &Npv_,           &b_Npv);
-    //    ch->SetBranchAddress("Nfatjet_pT30",    &Nfatjet_,       &b_Nfatjet);
     ch->SetBranchAddress("Nskinnyjet_mini", &Nskinnyjet_,    &b_Nskinnyjet);
-    //ch->SetBranchAddress("Nskinnyjet", &Nskinnyjet_,    &b_Nskinnyjet);
     ch->SetBranchAddress("NBtagCSVM_mini",  &NBtagCSVM_,     &b_NBtagCSVM);
     ch->SetBranchAddress("NBtagCSVM",  &NBtagCSVM_,     &b_NBtagCSVM);
     ch->SetBranchAddress("MJ_pT30",         &MJ_,            &b_MJ);
     ch->SetBranchAddress("MET",             &MET_,           &b_MET);
-    //ch->SetBranchAddress("HT",         &HT_,            &b_HT);
     ch->SetBranchAddress("HT_mini",         &HT_,            &b_HT);
     ch->SetBranchAddress("METPhi",          &METPhi_,        &b_METPhi);
     ch->SetBranchAddress("mj_pT30",         &mj_,            &b_mj);
@@ -186,26 +183,6 @@ void InitBaby(TChain *ch)
     ch->SetBranchAddress("FatjetEta_pT30",  &FatjetEta_,     &b_FatjetEta);
     ch->SetBranchAddress("FatjetPhi_pT30",  &FatjetPhi_,     &b_FatjetPhi);
     
-    // vvvvvvvvvvvvvvvvvvvvvvvvvvvvv for different R(FJ) vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-    //    ch->SetBranchAddress("mj_R1p2_pT30_Eta2p5",         &mj_,            &b_mj);
-    //    ch->SetBranchAddress("FatjetPt_R1p2_pT30_Eta2p5",   &FatjetPt_,      &b_FatjetPt);
-    //    ch->SetBranchAddress("FatjetEta_R1p2_pT30_Eta2p5",  &FatjetEta_,     &b_FatjetEta);
-    //    ch->SetBranchAddress("FatjetPhi_R1p2_pT30_Eta2p5",  &FatjetPhi_,     &b_FatjetPhi);
-    // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ for different R(FJ) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    /*    ch->SetBranchAddress("RA4MusPt",        &RA4MusPt_,      &b_RA4MusPt);
-    ch->SetBranchAddress("RA4MusPhi",       &RA4MusPhi_,     &b_RA4MusPhi);
-    ch->SetBranchAddress("RA4MusEta",       &RA4MusEta_,     &b_RA4MusEta);
-    ch->SetBranchAddress("RA4ElsPt",        &RA4ElsPt_,      &b_RA4ElsPt);
-    ch->SetBranchAddress("RA4ElsPhi",       &RA4ElsPhi_,     &b_RA4ElsPhi);
-    ch->SetBranchAddress("RA4ElsEta",       &RA4ElsEta_,     &b_RA4ElsEta);
-    ch->SetBranchAddress("JetPt",           &JetPt_,         &b_JetPt);
-    ch->SetBranchAddress("JetPhi",          &JetPhi_,        &b_JetPhi);
-    ch->SetBranchAddress("JetEta",          &JetEta_,        &b_JetEta);
-    ch->SetBranchAddress("JetCSV",          &JetCSV_,        &b_JetCSV);
-    ch->SetBranchAddress("RA4MusVetoPt",    &RA4MusVetoPt_,  &b_RA4MusVetoPt);
-    ch->SetBranchAddress("RA4ElsVetoPt",    &RA4ElsVetoPt_,  &b_RA4ElsVetoPt); */
-
     // vvvvvvvvvvvvvvvvvvvvvvvvvvvvv With Mini Iso vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     ch->SetBranchAddress("RA4MusPt_mi",        &RA4MusPt_,      &b_RA4MusPt);
     ch->SetBranchAddress("RA4MusPhi_mi",       &RA4MusPhi_,     &b_RA4MusPhi);

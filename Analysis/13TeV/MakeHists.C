@@ -1,7 +1,6 @@
 //Steps: 1. Declare 2. Initalize 3. Fill 4. Write Histograms
 
 #include <iostream>
-
 #include "TROOT.h"
 #include "TChain.h"
 #include "TString.h"
@@ -13,13 +12,8 @@
 #include "TLegend.h"
 #include "TMath.h"
 
-#include "babytree.h" 
-//#include "babytree_manuel.h"  // Change manuel bool
-
+#include "Config.h"
 #include "PassSelection.h"
-
-bool manuel = false;
-//bool manuel = true;
 
 using namespace std;
 bool    DoLog           = 1;
@@ -529,10 +523,10 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
             i_permille_old = i_permille;
         }
         // Progress indicator end ----------------------------------
-    
+
         // separate TT_sl and TT_ll
         int Ngenlep=0;
-	if(!manuel){
+	if(!richTuple){
 	  for(unsigned int igen=0; igen<GenId_->size(); igen++)
 	    { 
 	      if( TMath::Abs(GenMId_->at(igen))!=24 ) continue;
@@ -550,20 +544,15 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         // 
         // weights 
         // 
-	// Events are normalized to 1 pb-1
-	if(!manuel){ 
-	  EventWeight_ *= 3000.;
-	  if(EventWeightNeg_<0){
-	    EventWeight_ *= -1;
-	  }
-	}
-	else{ 
-	  EventWeight_ *=3; 
-	}
+	// Events are normalized to 1 pb-1 for StuTuples and 1 fb-1 for RichTuples
 
-        // Pileup 
+	EventWeight_ *= lumi * 1000.;
+	if(richTuple) EventWeight_ /= 1000.; 
+	if(!richTuple && EventWeightNeg_<0) EventWeight_ *= -1.;
 
-        // 
+	// Pileup 
+	
+	// 
         // single-lepton events selection
         // 
 	//Comented passnlep out for control region yields
@@ -699,6 +688,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
 	  }
 	} */
 
+
         //
         // HT, Nb and Nskinny with selected jets
         //
@@ -707,7 +697,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         int   Nbcsvm_thres=0;
         for(unsigned int ijet=0; ijet<JetPt_->size(); ijet++)
         {
-	  if(JetPt_->at(ijet)<40 || (manuel && JetIsLep_->at(ijet)==true) || TMath::Abs(JetEta_->at(ijet))>2.5) continue;
+	  if(JetPt_->at(ijet)<40 || (richTuple && JetIsLep_->at(ijet)==true) || TMath::Abs(JetEta_->at(ijet))>2.5) continue;
 	  HT_thres=HT_thres+JetPt_->at(ijet);
 	  Nskinny_thres++;
 	  
@@ -731,7 +721,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
             // ------------------------- matching begins -------------------------------
             // lepton
             float dRlep=999.;
-	    if(!manuel){
+	    if(!richTuple){
 	      if(RA4MusPt_->size()==1 ) dRlep = getDR( RA4MusEta_->at(0), FatjetEta_->at(ifj), 
 							RA4MusPhi_->at(0), FatjetPhi_->at(ifj) );
 	      if(RA4ElsPt_->size()==1 ) dRlep = getDR( RA4ElsEta_->at(0), FatjetEta_->at(ifj), 
@@ -759,10 +749,10 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
                                        JetPhi_->at(ijet), FatjetPhi_->at(ifj) );
                 if( dRb_tmp<dRbmin ) dRbmin=dRb_tmp;                         
 	      }
-            
+
             // dPhi(MET,lep)
             float dPhiMETlep=999;
-	    if(!manuel){
+	    if(!richTuple){
 	      if(RA4MusPt_->size()==1 ) dPhiMETlep=getDPhi(RA4MusPhi_->at(0), METPhi_);
 	      if(RA4ElsPt_->size()==1 ) dPhiMETlep=getDPhi(RA4ElsPhi_->at(0), METPhi_);
 	    } else {
@@ -824,7 +814,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
 
 	// mT calculation for 2 leptons	
 	double mT = -1;
-	if(!manuel){
+	if(!richTuple){
 	  double mTel = -1;
 	  double mTmu = -1;
 	  double mTelpT = -5;
@@ -851,8 +841,10 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
 	  if(mTelpT >= mTmupT) mT = mTel;
 	  else mT = mTmu;
 	} 
-	else{ mT = mt_; }
-
+	else{ 
+	  mT = mt_; 
+	}
+	
         // Apply Selection. Must pass the Baseline Selection and any other chosen Selections
         // 
 
@@ -881,7 +873,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         int Nm=0;
         int Nt=0;
         int Ntn=0; int Nen=0; int Nmn=0;
-	if(!manuel){
+	if(!richTuple){
 	  for(unsigned int igen=0; igen<GenId_->size(); igen++)
 	    { 
 	      if( TMath::Abs(GenMId_->at(igen))==24 && TMath::Abs(GenId_->at(igen))==11 ) Ne++;
@@ -904,16 +896,50 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         //
 
         // yields
-	if(!manuel){
-	  if(RA4ElsPt_->size()>=1) FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_);   
-	  if(RA4MusPt_->size()>=1) FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_);  
-	} else{
-	  if(nels_>=1) FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_);   
-	  if(nmus_>=1) FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_);  
+	if(!richTuple){
+	  //DEBUGGING (IS THIS A BETTER WAY TO HANDLE THE YIELDS TABLE? DON"T GET 3+ LEPTON EVENTS)
+	  if((RA4ElsPt_->size()+RA4MusPt_->size())==1){
+	    if(RA4ElsPt_->size()==1) FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_);   
+	    if(RA4MusPt_->size()==1) FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_);  
+	  }
+	  if((RA4ElsPt_->size()+RA4MusPt_->size())==2){ //For two leptons. Fill twice with half the event weight. Then look at number of entries for actual number of leptons.
+	    if(RA4ElsPt_->size()==2){
+	      FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_/2);	    
+	    }
+	    else if(RA4MusPt_->size()==2){
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	    }
+	    else if(RA4MusPt_->size()==1 && RA4ElsPt_->size()==1){
+	      FillTH1FAll(h1_yields, NFJbin, 05, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	    }
+	  }
+	} 
+	else{
+	  if((nels_+nmus_)==1){
+	    if(nels_==1) FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_);   
+	    if(nmus_==1) FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_);  
+	  }
+	  if((nels_+nmus_)==2){ //For two leptons. Fill twice with half the event weight. Then look at number of entries for actual number of leptons.
+	    if(nels_==2){
+	      FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 0.5, EventWeight_/2);	    
+	    }
+	    else if(nmus_==2){
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	    }
+	    else if(nmus_==1 && nels_==1){
+	      FillTH1FAll(h1_yields, NFJbin, 05, EventWeight_/2);	    
+	      FillTH1FAll(h1_yields, NFJbin, 1.5, EventWeight_/2);	    
+	    }
+	  }	  
 	}
-	       
+	
         // plots
-	if(!manuel && RA4MusPt_->size()==1) {
+	if(!richTuple && RA4MusPt_->size()==1) {
 	  FillTH1FAll(h1_muspT,   NFJbin, RA4MusPt_->at(0),  EventWeight_); 
 	  FillTH1FAll(h1_musEta,  NFJbin, RA4MusEta_->at(0), EventWeight_); 
 	  FillTH1FAll(h1_musPhi,  NFJbin, RA4MusPhi_->at(0), EventWeight_); 
@@ -922,7 +948,7 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
 	      FillTH1FAll(h1_muspTminusMET, NFJbin, (MET_-RA4MusPt_->at(0))/RA4MusPt_->at(0), EventWeight_);   
 	    }
 	}
-	if(!manuel && RA4ElsPt_->size()==1) {
+	if(!richTuple && RA4ElsPt_->size()==1) {
 	  FillTH1FAll(h1_elspT, NFJbin, RA4ElsPt_->at(0), EventWeight_);   
 	  FillTH1FAll(h1_elsEta, NFJbin, RA4ElsEta_->at(0), EventWeight_); 
 	  FillTH1FAll(h1_elsPhi, NFJbin, RA4ElsPhi_->at(0), EventWeight_); 
@@ -948,8 +974,8 @@ void MakeHists(TChain *ch, const char* Region, const char* babyName)
         FillTH1FAll(h1_METPhi, NFJbin, METPhi_, EventWeight_);        
         FillTH1FAll(h1_METx, NFJbin, MET_*TMath::Cos(METPhi_), EventWeight_);           
         FillTH1FAll(h1_METy, NFJbin, MET_*TMath::Sin(METPhi_), EventWeight_);           
-        if(!manuel && RA4MusPt_->size()==1) FillTH1FAll(h1_DPhi, NFJbin, getDPhi(RA4MusPhi_->at(0),METPhi_), EventWeight_);   
-        if(!manuel && RA4ElsPt_->size()==1) FillTH1FAll(h1_DPhi, NFJbin, getDPhi(RA4ElsPhi_->at(0),METPhi_), EventWeight_);   
+        if(!richTuple && RA4MusPt_->size()==1) FillTH1FAll(h1_DPhi, NFJbin, getDPhi(RA4MusPhi_->at(0),METPhi_), EventWeight_);   
+        if(!richTuple && RA4ElsPt_->size()==1) FillTH1FAll(h1_DPhi, NFJbin, getDPhi(RA4ElsPhi_->at(0),METPhi_), EventWeight_);   
         
         if(Nfatjet_thres>0) 
         {

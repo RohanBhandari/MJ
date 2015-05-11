@@ -229,8 +229,8 @@ void DoAnalysis(bool OnlyDraw=false)
         //  Make table of yields 
         // ---------------------------------------- 
 	MakeTables(0,   Region[iregion].Data(), babyName.Data(), false);
-        MakeTables(11,  Region[iregion].Data(), babyName.Data(), false);
-        MakeTables(13,  Region[iregion].Data(), babyName.Data(), false);
+	MakeTables(11,  Region[iregion].Data(), babyName.Data(), false);
+	MakeTables(13,  Region[iregion].Data(), babyName.Data(), false);
         
         // ----------------------------------------
         //  Make cards for combine/LandS 
@@ -238,9 +238,9 @@ void DoAnalysis(bool OnlyDraw=false)
         /*MakeCards(0,   Region[iregion].Data());
         MakeCards(11,  Region[iregion].Data());
         MakeCards(13,  Region[iregion].Data()); */
-
+ 
     } // Loop over regions
-
+    
     // ----------------------------------------
     //  Make Yields Book 
     // ---------------------------------------- 

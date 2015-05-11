@@ -23,9 +23,9 @@ ofstream fout;
 // Add one more since index starts at 0
 const int Nregions = 4  +1;
 const int Nbcuts = 3    +1;
-const int Njetcuts = 2  +1;
+const int Njetcuts = 3  +1;
 const int Nmetcuts = 2  +1;
-const int Nlepcuts = 2  +1;
+const int Nlepcuts = 4  +1;
 const int Nmetjetcuts = (Njetcuts-1)*(Nmetcuts-1)  +1;
 
 //const char* sigType = "T1tttt[1500,100]";   //Uncompressed
@@ -270,6 +270,9 @@ void MakeYieldsBook(TString Region[], int Nselections, char* babyName =""){
     total_Bkg[a][b][c][f] = h1_MC->IntegralAndError(1,10000,total_Bkg_err[a][b][c][f]);
     total_f1500_100[a][b][c][f] = h1_f1500_100->IntegralAndError(1,10000,total_f1500_100_err[a][b][c][f]);
     total_f1200_800[a][b][c][f] = h1_f1200_800->IntegralAndError(1,10000,total_f1200_800_err[a][b][c][f]);
+
+    
+    HistFile[iFile]->Close();
   }
   
   // DEBUG
